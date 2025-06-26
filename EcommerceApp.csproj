@@ -22,4 +22,8 @@
     <Folder Include="Areas\Dashboard\Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Ecommerce.Data\EcommerceApp.Data.csproj" />
+  </ItemGroup>
+
 </Project>
