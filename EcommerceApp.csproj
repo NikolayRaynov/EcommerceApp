@@ -24,6 +24,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ecommerce.Data\EcommerceApp.Data.csproj" />
+    <ProjectReference Include="..\EcommerceApp.Common\EcommerceApp.Common.csproj" />
+    <ProjectReference Include="..\EcommerceApp.Web.ViewModsels\EcommerceApp.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>
