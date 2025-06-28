@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using EcommerceApp.Web.ViewModsels;
+using EcommerceApp.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceApp.Controllers
@@ -14,6 +14,11 @@ namespace EcommerceApp.Controllers
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Privacy()
         {
             return View();
         }
