@@ -18,6 +18,8 @@ builder.Services.AddControllersWithViews(options =>
 })
     .AddRazorRuntimeCompilation();
 
+builder.Services.AddApplicationServices();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
