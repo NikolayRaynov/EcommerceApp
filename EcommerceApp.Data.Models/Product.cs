@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static EcommerceApp.Common.EntityValidationConstants.Product;
 
 namespace EcommerceApp.Data.Models
@@ -18,6 +19,10 @@ namespace EcommerceApp.Data.Models
         [MaxLength(ProductDescriptionMaxLength)]
         [Comment("Description of the product")]
         public string Description { get; set; } = string.Empty;
+
+        [Required]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Comment("The selling price of the product")]
         public decimal Price { get; set; }
 
         [Required]
