@@ -1,12 +1,13 @@
 ﻿using EcommerceApp.Data.Models;
 using EcommerceApp.Data.Repository.Interfaces;
+using EcommerceApp.Services.Data.Interfaces;
 using EcommerceApp.Web.ViewModels.Product;
 using Microsoft.EntityFrameworkCore;
 using static EcommerceApp.Common.ApplicationConstants;
 
 namespace EcommerceApp.Services.Data
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         private readonly IRepository repository;
 
@@ -143,6 +144,26 @@ namespace EcommerceApp.Services.Data
             }
 
             return await query.CountAsync();
+        }
+
+        public async Task<ProductIndexViewModel?> GetByIdAsync(int productId)
+        {
+            var product = await this.repository.All<Product>()
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
+            if (product == null)
+            {
+                return null;
+            }
+
+            return new ProductIndexViewModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Image = product.Image
+            };
         }
     }
 }
