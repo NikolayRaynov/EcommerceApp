@@ -98,6 +98,43 @@ namespace EcommerceApp.Areas.Dashboard.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var product = await this.productService.GetProductForDeleteAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new DeleteProductViewModel
+            {
+                Id = product.Id,
+                Name = product.Name
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeleteProductViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    await this.productService.DeleteProductAsync(model.Id);
+                }
+                catch (Exception)
+                {
+                    return NotFound();
+                }
+            }
+            
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var product = await this.productService.GetByIdAsync(id);
