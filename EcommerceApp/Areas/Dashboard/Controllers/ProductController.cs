@@ -1,32 +1,32 @@
 ﻿using EcommerceApp.Data.Models;
 using EcommerceApp.Data.Repository.Interfaces;
-using EcommerceApp.Services.Data;
 using EcommerceApp.Services.Data.Interfaces;
 using EcommerceApp.Web.ViewModels.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace EcommerceApp.Areas.Dashboard.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Area("Dashboard")]
     public class ProductController : Controller
     {
         private readonly IProductService productService;
         private readonly IRepository repository;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IRepository repository)
         {
             this.productService = productService;
+            this.repository = repository;
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var products = await productService.GetAllProductsAsync();
+            return View(products);
         }
         
 
