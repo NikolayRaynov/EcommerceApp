@@ -115,13 +115,16 @@ namespace EcommerceApp.Services.Data
             return new DeleteProductViewModel
             {
                 Id = product.Id,
-                Name = product.Name
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Image = product.Image
             };
         }
 
         public async Task<bool> DeleteProductAsync(int productId)
         {
-            var product = await this.repository.GetByIdAsync<Product>(productId);
+            var product = await this.repository.All<Product>().FirstOrDefaultAsync(p => p.Id == productId);
 
             if (product == null)
             {

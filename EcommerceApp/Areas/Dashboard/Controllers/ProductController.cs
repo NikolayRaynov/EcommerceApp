@@ -4,7 +4,8 @@ using EcommerceApp.Services.Data.Interfaces;
 using EcommerceApp.Web.ViewModels.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+
+using static EcommerceApp.Common.ApplicationConstants;
 
 namespace EcommerceApp.Areas.Dashboard.Controllers
 {
@@ -28,7 +29,7 @@ namespace EcommerceApp.Areas.Dashboard.Controllers
             var products = await productService.GetAllProductsAsync();
             return View(products);
         }
-        
+
 
         [HttpGet]
         public async Task<IActionResult> Add()
@@ -49,7 +50,21 @@ namespace EcommerceApp.Areas.Dashboard.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var imageName = Guid.NewGuid().ToString() + Path.GetExtension(model.ImageFile.FileName);
+
+                if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath)))
+                {
+                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath));
+                }
+
+                var savePath = Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath, imageName);
+                using (var stream = new FileStream(savePath, FileMode.Create))
+                {
+                    await model.ImageFile.CopyToAsync(stream);
+                }
+
+                model.Image = $"/images/Products/{imageName}";
+
                 await this.productService.AddProductAsync(model);
                 return RedirectToAction(nameof(Index));
             }
@@ -85,7 +100,24 @@ namespace EcommerceApp.Areas.Dashboard.Controllers
             {
                 try
                 {
-                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    if (model.ImageFile != null)
+                    {
+                        var imageName = Guid.NewGuid().ToString() + Path.GetExtension(model.ImageFile.FileName);
+
+                        if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath)))
+                        {
+                            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath));
+                        }
+
+                        var savePath = Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath, imageName);
+                        using (var stream = new FileStream(savePath, FileMode.Create))
+                        {
+                            await model.ImageFile.CopyToAsync(stream);
+                        }
+
+                        model.Image = $"/images/Products/{imageName}";
+                    }
+
                     await this.productService.UpdateProductAsync(model);
                 }
                 catch (Exception)
@@ -109,7 +141,10 @@ namespace EcommerceApp.Areas.Dashboard.Controllers
             var viewModel = new DeleteProductViewModel
             {
                 Id = product.Id,
-                Name = product.Name
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Image = product.Image
             };
 
             return View(viewModel);
@@ -118,19 +153,15 @@ namespace EcommerceApp.Areas.Dashboard.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(DeleteProductViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    await this.productService.DeleteProductAsync(model.Id);
-                }
-                catch (Exception)
-                {
-                    return NotFound();
-                }
+                await this.productService.DeleteProductAsync(model.Id);
             }
-            
+            catch (Exception)
+            {
+                return NotFound();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

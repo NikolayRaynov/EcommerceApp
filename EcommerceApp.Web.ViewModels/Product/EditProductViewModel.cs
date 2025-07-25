@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using static EcommerceApp.Common.EntityValidationConstants.Product;
 
 namespace EcommerceApp.Web.ViewModels.Product
@@ -20,8 +21,8 @@ namespace EcommerceApp.Web.ViewModels.Product
         [Required]
         public decimal Price { get; set; }
 
-        [Required]
-        [MaxLength(ImageMaxLength)]
-        public string Image { get; set; } = string.Empty;
+        public string? Image { get; set; }
+
+        public IFormFile? ImageFile { get; set; }
     }
 }
