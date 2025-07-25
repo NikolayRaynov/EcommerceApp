@@ -1,5 +1,4 @@
-﻿using EcommerceApp.Data.Models;
-using EcommerceApp.Data.Repository.Interfaces;
+﻿using EcommerceApp.Data.Repository.Interfaces;
 using EcommerceApp.Services.Data.Interfaces;
 using EcommerceApp.Web.ViewModels.Product;
 using Microsoft.AspNetCore.Authorization;
@@ -50,21 +49,7 @@ namespace EcommerceApp.Areas.Dashboard.Controllers
         {
             if (ModelState.IsValid)
             {
-                var imageName = Guid.NewGuid().ToString() + Path.GetExtension(model.ImageFile.FileName);
-
-                if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath)))
-                {
-                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath));
-                }
-
-                var savePath = Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath, imageName);
-                using (var stream = new FileStream(savePath, FileMode.Create))
-                {
-                    await model.ImageFile.CopyToAsync(stream);
-                }
-
-                model.Image = $"/images/Products/{imageName}";
-
+                model.Image = await UploadImageAsync(model.ImageFile);
                 await this.productService.AddProductAsync(model);
                 return RedirectToAction(nameof(Index));
             }
@@ -102,20 +87,7 @@ namespace EcommerceApp.Areas.Dashboard.Controllers
                 {
                     if (model.ImageFile != null)
                     {
-                        var imageName = Guid.NewGuid().ToString() + Path.GetExtension(model.ImageFile.FileName);
-
-                        if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath)))
-                        {
-                            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath));
-                        }
-
-                        var savePath = Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath, imageName);
-                        using (var stream = new FileStream(savePath, FileMode.Create))
-                        {
-                            await model.ImageFile.CopyToAsync(stream);
-                        }
-
-                        model.Image = $"/images/Products/{imageName}";
+                        model.Image = await UploadImageAsync(model.ImageFile);
                     }
 
                     await this.productService.UpdateProductAsync(model);
@@ -186,10 +158,24 @@ namespace EcommerceApp.Areas.Dashboard.Controllers
 
             return View(viewModel);
         }
-
-        private bool ProductExists(int id)
+        private async Task<string> UploadImageAsync(IFormFile imageFile)
         {
-            return repository.All<Product>().Any(e => e.Id == id);
+            var imageName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+            var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath);
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            var savePath = Path.Combine(directoryPath, imageName);
+
+            using (var stream = new FileStream(savePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(stream);
+            }
+
+            return $"/images/Products/{imageName}";
         }
     }
 }
