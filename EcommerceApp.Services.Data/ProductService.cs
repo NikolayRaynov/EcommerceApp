@@ -131,6 +131,13 @@ namespace EcommerceApp.Services.Data
                 return false;
             }
 
+            string productImagePath = Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath, Path.GetFileName(product.Image));
+
+            if (File.Exists(productImagePath))
+            {
+                File.Delete(productImagePath);
+            }
+
             this.repository.Delete(product);
             await this.repository.SaveChangesAsync();
 

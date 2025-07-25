@@ -20,6 +20,7 @@
 	<ItemGroup>
 		<Folder Include="Areas\Dashboard\Data\" />
 		<Folder Include="Areas\Dashboard\Models\" />
+		<Folder Include="wwwroot\images\Products\" />
 	</ItemGroup>
 	
   <ItemGroup>
