@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,5 +19,11 @@ namespace EcommerceApp.Data.Models
         [Required]
         [Comment("Quantity of the product in the cart.")]
         public int Quantity { get; set; }
+
+        [Required]
+        [Comment("Identifier of the user who owns the cart.")]
+        public string UserId { get; set; } = null!;
+        [ForeignKey(nameof(UserId))]
+        public virtual IdentityUser User { get; set; } = null!;
     }
 }
