@@ -8,6 +8,7 @@
             public const int ProductNameMaxLength = 85;
             public const int ProductDescriptionMinLength = 10;
             public const int ProductDescriptionMaxLength = 800;
+            public const int ImageMaxLength = 2083;
         }
     }
 }
