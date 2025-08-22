@@ -140,7 +140,7 @@ namespace EcommerceApp.Areas.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var product = await this.productService.GetByIdAsync(id);
+            var product = await this.productService.GetProductByIdAsync(id);
 
             if (product == null)
             {

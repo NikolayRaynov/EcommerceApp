@@ -156,7 +156,7 @@ namespace EcommerceApp.Services.Data
             return await query.CountAsync();
         }
 
-        public async Task<ProductIndexViewModel?> GetByIdAsync(int productId)
+        public async Task<ProductIndexViewModel?> GetProductByIdAsync(int productId)
         {
             var product = await this.repository.All<Product>()
                 .FirstOrDefaultAsync(p => p.Id == productId);
