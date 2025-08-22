@@ -10,7 +10,7 @@ namespace EcommerceApp.Web.ViewModels.Product
 
         [Required]
         [MaxLength(ProductNameMaxLength)]
-        [MinLength(ProductNameMinLenghth)]
+        [MinLength(ProductNameMinLength)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
