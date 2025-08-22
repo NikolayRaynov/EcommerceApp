@@ -10,5 +10,11 @@
             public const int ProductDescriptionMaxLength = 800;
             public const int ImageMaxLength = 2083;
         }
+
+        public static class Cart
+        {
+            public const int CartItemMinQuantity = 1;
+            public const int CartItemMaxQuantity = 20;
+        }
     }
 }
