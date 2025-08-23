@@ -1,0 +1,100 @@
+﻿@model CartIndexViewModel
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+@if (!Model.CartItems.Any())
+{
+    <div class="card p-5 text-center" style="margin: auto; max-width: 950px; width: 90%; box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 1rem; border: transparent;">
+        <h2 style="font-family: sans-serif;">Your cart is empty.</h2>
+        <p style="font-family: sans-serif;">
+            Browse our products and add something you like!
+        </p>
+        <div style="margin-top: 3rem;">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary" style="background-color: #000; border-color: #000; color: white; width: 100%; font-size: 0.7rem; margin-top: 4vh; padding: 1vh; border-radius: 0; text-decoration: none;">Back to shop</a>
+        </div>
+    </div>
+}
+else
+{
+    <div id="content-wrapper" style="background: #ddd; min-height: 100vh; vertical-align: middle; display: flex; font-family: sans-serif; font-size: 0.8rem; font-weight: bold; flex-direction: column;">
+        <div class="card" style="margin: auto; max-width: 950px; width: 90%; box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius: 1rem; border: transparent;">
+            <div class="row" style="margin: 0;">
+                <div class="col-md-8 cart" style="background-color: #fff; padding: 4vh 5vh; border-bottom-left-radius: 1rem; border-top-left-radius: 1rem;">
+                    <div class="title" style="margin-bottom: 5vh;">
+                        <div class="row" style="margin: 0;">
+                            <div class="col" style="padding: 0 1vh;"><h4><b style="font-size: 1.5rem;">Shopping Cart</b></h4></div>
+                            <div class="col align-self-center text-right text-muted" style="padding: 0 1vh; text-align: right; color: rgb(108, 117, 125) !important;">@Model.CartItems.Count() items</div>
+                        </div>
+                    </div>
+
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <div class="row border-top border-bottom" style="margin: 0; border-top: 1px solid rgba(0,0,0,.1) !important; border-bottom: 1px solid rgba(0,0,0,.1) !important;">
+                            <div class="row main align-items-center" style="margin: 0; padding: 2vh 0; width: 100%;">
+                                <div class="col-2" style="padding: 0 1vh;">
+                                    <img class="img-fluid" src="@item.ImageUrl" style="width: 3.5rem;">
+                                </div>
+                                <div class="col" style="padding: 0 1vh;">
+                                    <div class="row" style="margin: 0;">@item.ProductName</div>
+                                </div>
+                                <div class="col" style="padding: 0 1vh;">
+                                    <form asp-controller="Cart" asp-action="DecreaseQuantity" asp-route-id="@item.Id" method="post" style="display: inline;">
+                                        <button type="submit" class="btn btn-primary p-0" style="border: none; background:none; color:black; padding: 0 !important; cursor: pointer;">-</button>
+                                    </form>
+                                    <a style="padding: 0 1vh; border: none; background:none; color:black">@item.Quantity</a>
+                                    <form asp-controller="Cart" asp-action="IncreaseQuantity" asp-route-id="@item.Id" method="post" style="display: inline;">
+                                        <button type="submit" class="btn btn-primary p-0" style="border: none; background:none; color:black; padding: 0 !important; cursor: pointer;">+</button>
+                                    </form>
+                                </div>
+                                <div class="col" style="padding: 0 1vh;">
+                                    &euro;
+                                    @item.LineTotal.ToString("F2")
+                                    <form asp-controller="Cart" asp-action="RemoveFromCart" asp-route-id="@item.Id" method="post" style="display: inline;">
+                                        <button type="submit" class="close" style="border:none; background:none; margin-left: auto; font-size: 0.7rem; cursor: pointer;">&#10005;</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="back-to-shop" style="margin-top: 4.5rem;">
+                        <a asp-controller="Home" asp-action="Index" style="color: black; text-decoration: none;">&leftarrow;</a>
+                        <span class="text-muted" style="color: rgb(108, 117, 125) !important;">Back to shop</span>
+                    </div>
+                </div>
+
+                <div class="col-md-4 summary" style="background-color: #ddd; border-top-right-radius: 1rem; border-bottom-right-radius: 1rem; padding: 4vh; color: rgb(65, 65, 65);">
+                    <div><h5 style="margin-top: 4vh;"><b style="font-size: 1.25rem;">Summary</b></h5></div>
+                    <hr style="margin-top: 1.25rem; border-top: 1px solid rgba(0,0,0,.1);">
+                    <div class="row" style="margin: 0;">
+                        <div class="col" style="padding: 0 1vh; padding-left:0 !important;">
+                            ITEMS
+                            @Model.CartItems.Count()
+                        </div>
+                        <div class="col text-right" style="padding: 0 1vh; text-align: right;">&euro; @Model.Subtotal.ToString("F2")</div>
+                    </div>
+                    <form style="padding: 2vh 0;">
+                        <p style="font-family: sans-serif;">SHIPPING</p>
+                        <select style="border: 1px solid rgba(0, 0, 0, 0.137); padding: 1.5vh 1vh; margin-bottom: 4vh; outline: none; width: 100%; background-color: rgb(247, 247, 247);">
+                            <option class="text-muted" style="color: rgb(108, 117, 125) !important;">
+                                Standard-Delivery -
+                                &euro;@Model.ShippingCost.ToString("F2")
+                            </option>
+                        </select>
+                        <p style="font-family: sans-serif;">GIVE CODE</p>
+                        <input id="code" placeholder="Enter your code" style="border: 1px solid rgba(0, 0, 0, 0.137); padding: 1vh; margin-bottom: 4vh; outline: none; width: 100%; background-color: rgb(247, 247, 247); background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253), rgba(255, 255, 255, 0.185)), url(&quot;https://img.icons8.com/small/16/000000/long-arrow-right.png&quot;); background-repeat: no-repeat; background-position-x: 95%; background-position-y: center;">
+                    </form>
+                    <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0; margin: 0;">
+                        <div class="col" style="padding: 0 1vh;">TOTAL PRICE</div>
+                        <div class="col text-right" style="padding: 0 1vh; text-align: right;">&euro; @Model.Total.ToString("F2")</div>
+                    </div>
+                    <form asp-controller="Order" asp-action="Checkout" method="get">
+                        <button type="submit" class="btn" style="background-color: #000; border-color: #000; color: white; width: 100%; font-size: 0.7rem; margin-top: 4vh; padding: 1vh; border-radius: 0;">CHECKOUT</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
