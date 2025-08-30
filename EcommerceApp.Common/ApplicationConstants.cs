@@ -7,5 +7,7 @@
         public const string DefaultImagePath = "wwwroot/images/Products";
         public const decimal DefaultShippingCost = 5.00m;
         public const int ReleaseYear = 2025;
+        public const int UsernameMinLength = 4;
+        public const int UsernameMaxLength = 255;
     }
 }
