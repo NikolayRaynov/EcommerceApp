@@ -46,6 +46,18 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
+app.Use((context, next) =>
+{
+    if (context.User.Identity?.IsAuthenticated == true && context.Request.Path == "/")
+    {
+        if (context.User.IsInRole("Admin"))
+        {
+            context.Response.Redirect("/Dashboard/Home/Index");
+            return Task.CompletedTask;
+        }
+    }
+    return next();
+});
 app.UseAuthorization();
 
 app.MapControllerRoute(
