@@ -12,8 +12,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddTransient<IEmailSender, EmailSender>();
 
-			return services;
+            return services;
         }
     }
 }
