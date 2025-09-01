@@ -21,6 +21,15 @@ namespace EcommerceApp.Data
 
             builder.Entity<CartProduct>()
                 .HasKey(cp => new { cp.CartId, cp.ProductId });
+
+            builder.Entity<CartProduct>()
+                .HasOne(cp => cp.Cart)
+                .WithMany(c => c.CartProducts)
+                .HasForeignKey(cp => cp.CartId);
+            builder.Entity<CartProduct>()
+                .HasOne(cp => cp.Product)
+                .WithMany(p => p.CartProducts)
+                .HasForeignKey(cp => cp.ProductId);
         }
     }
 }

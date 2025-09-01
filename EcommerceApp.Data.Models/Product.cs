@@ -19,7 +19,7 @@ namespace EcommerceApp.Data.Models
         [MaxLength(ProductDescriptionMaxLength)]
         [Comment("Description of the product")]
         public string Description { get; set; } = string.Empty;
-
+            
         [Required]
         [Column(TypeName = "decimal(18, 2)")]
         [Comment("The selling price of the product")]
@@ -29,5 +29,7 @@ namespace EcommerceApp.Data.Models
         [MaxLength(ImageMaxLength)]
         [Comment("Image URL for the product")]
         public string Image { get; set; } = string.Empty;
+
+        public virtual ICollection<CartProduct> CartProducts { get; set; } = new List<CartProduct>();
     }
 }

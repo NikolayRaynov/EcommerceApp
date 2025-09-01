@@ -20,23 +20,23 @@ namespace EcommerceApp.Services.Data
 
         public async Task<CartIndexViewModel> GetUserCartAsync(string userId)
         {
-            var cartItems = await repository
-                .All<Cart>()
-                .Where(c => c.UserId == userId)
-                .Include(c => c.Product)
-                .Select(c => new CartItemViewModel
-                {
-                    Id = c.Id,
-                    ProductName = c.Product.Name,
-                    ImageUrl = c.Product.Image,
-                    Quantity = c.Quantity,
-                    Price = c.Product.Price
-                })
-                .ToListAsync();
+            //var cartItems = await repository
+            //    .All<Cart>()
+            //    .Where(c => c.UserId == userId)
+            //    .Include(c => c.Product)
+            //    .Select(c => new CartItemViewModel
+            //    {
+            //        Id = c.Id,
+            //        ProductName = c.Product.Name,
+            //        ImageUrl = c.Product.Image,
+            //        Quantity = c.Quantity,
+            //        Price = c.Product.Price
+            //    })
+            //    .ToListAsync();
 
             var model = new CartIndexViewModel
             {
-                CartItems = cartItems,
+                //CartItems = cartItems,
                 ShippingCost = DefaultShippingCost
             };
 
@@ -45,51 +45,51 @@ namespace EcommerceApp.Services.Data
 
         public async Task AddProductToCartAsync(int productId, string userId)
         {
-            var existingCartItem = await repository
-                .All<Cart>()
-                .FirstOrDefaultAsync(c => c.UserId == userId && c.ProductId == productId);
+            //var existingCartItem = await repository
+            //    .All<Cart>()
+            //    .FirstOrDefaultAsync(c => c.UserId == userId && c.ProductId == productId);
 
-            if (existingCartItem != null)
-            {
-                existingCartItem.Quantity++;
-            }
-            else
-            {
-                var cartItem = new Cart
-                {
-                    UserId = userId,
-                    ProductId = productId,
-                    Quantity = 1
-                };
+            //if (existingCartItem != null)
+            //{
+            //    existingCartItem.Quantity++;
+            //}
+            //else
+            //{
+            //    var cartItem = new Cart
+            //    {
+            //        UserId = userId,
+            //        ProductId = productId,
+            //        Quantity = 1
+            //    };
 
-                await repository.AddAsync(cartItem);
-            }
+            //    await repository.AddAsync(cartItem);
+            //}
             
-            await repository.SaveChangesAsync();
+            //await repository.SaveChangesAsync();
         }
 
         public async Task IncreaseProductQuantityAsync(int cartItemId)
         {
-            var cartItem = await repository.All<Cart>().FirstOrDefaultAsync(ci => ci.Id == cartItemId);
-            if (cartItem != null)
-            {
-                cartItem.Quantity++;
-                await repository.SaveChangesAsync();
-            }
+            //var cartItem = await repository.All<Cart>().FirstOrDefaultAsync(ci => ci.Id == cartItemId);
+            //if (cartItem != null)
+            //{
+            //    cartItem.Quantity++;
+            //    await repository.SaveChangesAsync();
+            //}
         }
 
         public async Task DecreaseProductQuantityAsync(int cartItemId)
         {
-            var cartItem = await repository.All<Cart>().FirstOrDefaultAsync(ci => ci.Id == cartItemId);
-            if (cartItem != null)
-            {
-                cartItem.Quantity--;
-                if (cartItem.Quantity <= 0)
-                {
-                    await repository.DeleteAsync<Cart>(cartItem);
-                }
-                await repository.SaveChangesAsync();
-            }
+            //var cartItem = await repository.All<Cart>().FirstOrDefaultAsync(ci => ci.Id == cartItemId);
+            //if (cartItem != null)
+            //{
+            //    cartItem.Quantity--;
+            //    if (cartItem.Quantity <= 0)
+            //    {
+            //        await repository.DeleteAsync<Cart>(cartItem);
+            //    }
+            //    await repository.SaveChangesAsync();
+            //}
         }
 
         public async Task RemoveProductFromCartAsync(int cartItemId)
