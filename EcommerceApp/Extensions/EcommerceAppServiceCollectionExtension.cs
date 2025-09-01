@@ -2,6 +2,7 @@
 using EcommerceApp.Data.Repository.Interfaces;
 using EcommerceApp.Services.Data;
 using EcommerceApp.Services.Data.Interfaces;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

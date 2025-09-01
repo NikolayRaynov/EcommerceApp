@@ -1,4 +1,5 @@
 using EcommerceApp.Data;
+using EcommerceApp.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +11,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>
+    (options =>
+    {
+        options.SignIn.RequireConfirmedAccount = true;
+    })
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultUI();
 
 builder.Services.AddAuthentication()
     .AddGoogle(options =>
@@ -26,6 +32,7 @@ builder.Services.AddControllersWithViews(options =>
 })
     .AddRazorRuntimeCompilation();
 
+builder.Services.AddRazorPages();
 builder.Services.AddApplicationServices();
 
 var app = builder.Build();
