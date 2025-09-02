@@ -6,8 +6,8 @@ namespace EcommerceApp.Services.Data.Interfaces
     {
         Task<CartIndexViewModel> GetUserCartAsync(string userId);
         Task AddProductToCartAsync(int productId, string userId);
-        Task IncreaseProductQuantityAsync(int cartItemId);
-        Task DecreaseProductQuantityAsync(int cartItemId);
-        Task RemoveProductFromCartAsync(int cartItemId);
+        Task IncreaseProductQuantityAsync(int productId, string userId);
+        Task DecreaseProductQuantityAsync(int productId, string userId);
+        Task RemoveProductFromCartAsync(int productId, string userId);
     }
 }

@@ -20,23 +20,25 @@ namespace EcommerceApp.Services.Data
 
         public async Task<CartIndexViewModel> GetUserCartAsync(string userId)
         {
-            //var cartItems = await repository
-            //    .All<Cart>()
-            //    .Where(c => c.UserId == userId)
-            //    .Include(c => c.Product)
-            //    .Select(c => new CartItemViewModel
-            //    {
-            //        Id = c.Id,
-            //        ProductName = c.Product.Name,
-            //        ImageUrl = c.Product.Image,
-            //        Quantity = c.Quantity,
-            //        Price = c.Product.Price
-            //    })
-            //    .ToListAsync();
+            var userCart = await GetCartAsync(userId);
+
+            var cartItems = await repository
+                .All<CartProduct>()
+                .Where(cp => cp.CartId == userCart.Id)
+                .Include(cp => cp.Product)
+                .Select(c => new CartItemViewModel
+                {
+                    Id = c.ProductId,
+                    ProductName = c.Product.Name,
+                    ImageUrl = c.Product.Image,
+                    Quantity = c.Quantity,
+                    Price = c.Product.Price
+                })
+                .ToListAsync();
 
             var model = new CartIndexViewModel
             {
-                //CartItems = cartItems,
+                CartItems = cartItems,
                 ShippingCost = DefaultShippingCost
             };
 
@@ -45,58 +47,72 @@ namespace EcommerceApp.Services.Data
 
         public async Task AddProductToCartAsync(int productId, string userId)
         {
-            //var existingCartItem = await repository
-            //    .All<Cart>()
-            //    .FirstOrDefaultAsync(c => c.UserId == userId && c.ProductId == productId);
+            var userCart = await GetCartAsync(userId);
 
-            //if (existingCartItem != null)
-            //{
-            //    existingCartItem.Quantity++;
-            //}
-            //else
-            //{
-            //    var cartItem = new Cart
-            //    {
-            //        UserId = userId,
-            //        ProductId = productId,
-            //        Quantity = 1
-            //    };
+            var existingCartItem = await repository
+                .All<CartProduct>()
+                .FirstOrDefaultAsync(cp => cp.CartId == userCart.Id && cp.ProductId == productId);
 
-            //    await repository.AddAsync(cartItem);
-            //}
-            
-            //await repository.SaveChangesAsync();
+            if (existingCartItem != null)
+            {
+                existingCartItem.Quantity++;
+            }
+            else
+            {
+                var cartProduct = new CartProduct
+                {
+                    CartId = userCart.Id,
+                    ProductId = productId,
+                    Quantity = 1
+                };
+
+                await repository.AddAsync(cartProduct);
+            }
+
+            await repository.SaveChangesAsync();
         }
 
-        public async Task IncreaseProductQuantityAsync(int cartItemId)
+        public async Task IncreaseProductQuantityAsync(int productId, string userId)
         {
-            //var cartItem = await repository.All<Cart>().FirstOrDefaultAsync(ci => ci.Id == cartItemId);
-            //if (cartItem != null)
-            //{
-            //    cartItem.Quantity++;
-            //    await repository.SaveChangesAsync();
-            //}
+            var userCart = await GetCartAsync(userId);
+
+            var cartProduct = await repository.All<CartProduct>()
+                .FirstOrDefaultAsync(cp => cp.CartId == userCart.Id && cp.ProductId == productId);
+
+            if (cartProduct != null)
+            {
+                cartProduct.Quantity++;
+                await repository.SaveChangesAsync();
+            }
         }
 
-        public async Task DecreaseProductQuantityAsync(int cartItemId)
+        public async Task DecreaseProductQuantityAsync(int productId, string userId)
         {
-            //var cartItem = await repository.All<Cart>().FirstOrDefaultAsync(ci => ci.Id == cartItemId);
-            //if (cartItem != null)
-            //{
-            //    cartItem.Quantity--;
-            //    if (cartItem.Quantity <= 0)
-            //    {
-            //        await repository.DeleteAsync<Cart>(cartItem);
-            //    }
-            //    await repository.SaveChangesAsync();
-            //}
+            var userCart = await GetCartAsync(userId);
+
+            var cartProduct = await repository.All<CartProduct>()
+                .FirstOrDefaultAsync(cp => cp.CartId == userCart.Id && cp.ProductId == productId);
+
+            if (cartProduct != null)
+            {
+                cartProduct.Quantity--;
+
+                if (cartProduct.Quantity <= 0)
+                {
+                    repository.Delete(cartProduct);
+                }
+
+                await repository.SaveChangesAsync();
+            }
         }
 
-        public async Task RemoveProductFromCartAsync(int cartItemId)
+        public async Task RemoveProductFromCartAsync(int productId, string userId)
         {
+            var userCart = await GetCartAsync(userId);
+
             var cartItem = await repository
-                .All<Cart>()
-                .FirstOrDefaultAsync(ci => ci.Id == cartItemId);
+                .All<CartProduct>()
+                .FirstOrDefaultAsync(cp => cp.CartId == userCart.Id && cp.ProductId == productId);
 
             if (cartItem == null)
             {
@@ -105,6 +121,24 @@ namespace EcommerceApp.Services.Data
 
             repository.Delete(cartItem);
             await repository.SaveChangesAsync();
+        }
+
+        private async Task<Cart> GetCartAsync(string userId)
+        {
+            var userCart = await repository.All<Cart>()
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (userCart == null)
+            {
+                userCart = new Cart
+                {
+                    UserId = userId
+                };
+                await repository.AddAsync(userCart);
+                await repository.SaveChangesAsync();
+            }
+
+            return userCart;
         }
     }
 }
