@@ -38,28 +38,28 @@ namespace EcommerceApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> IncreaseQuantity(int productId)
+        public async Task<IActionResult> IncreaseQuantity(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await this.cartService.IncreaseProductQuantityAsync(productId, userId);
+            await this.cartService.IncreaseProductQuantityAsync(id, userId);
 
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
-        public async Task<IActionResult> DecreaseQuantity(int productId)
+        public async Task<IActionResult> DecreaseQuantity(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await this.cartService.DecreaseProductQuantityAsync(productId, userId);
+            await this.cartService.DecreaseProductQuantityAsync(id, userId);
 
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveFromCart(int productId)
+        public async Task<IActionResult> RemoveFromCart(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await this.cartService.RemoveProductFromCartAsync(productId, userId);
+            await this.cartService.RemoveProductFromCartAsync(id, userId);
 
             return RedirectToAction(nameof(Index));
         }
