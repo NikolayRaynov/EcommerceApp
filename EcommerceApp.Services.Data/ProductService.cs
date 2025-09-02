@@ -131,7 +131,18 @@ namespace EcommerceApp.Services.Data
                 return false;
             }
 
-            string productImagePath = Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath, Path.GetFileName(product.Image));
+            var cartProducts = await this.repository
+                .All<CartProduct>()
+                .Where(cp => cp.ProductId == productId)
+                .ToListAsync();
+
+            if (cartProducts.Any())
+            {
+                this.repository.DeleteRange(cartProducts);
+            }
+
+            string productImagePath = Path.Combine(Directory.GetCurrentDirectory(), 
+                DefaultImagePath, Path.GetFileName(product.Image));
 
             if (File.Exists(productImagePath))
             {
