@@ -12,7 +12,7 @@ namespace EcommerceApp.Web.ViewModels.Cart
         public int ProductId { get; set; }
 
         [Required]
-        [StringLength(CartItemMinQuantity, MinimumLength = CartItemMaxQuantity)]
+        [Range(CartItemMinQuantity, CartItemMaxQuantity)]
         public int Quantity { get; set; }
 
         [Required]
