@@ -140,5 +140,20 @@ namespace EcommerceApp.Services.Data
 
             return userCart;
         }
+
+        public async Task<int> GetCartItemCountAsync(string userId)
+        {
+            var userCart = await this.repository
+                .All<Cart>()
+                .Include(c => c.CartProducts)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if(userCart == null)
+            {
+                return 0;
+            }
+
+            return userCart.CartProducts.Sum(cp => cp.Quantity);
+        }
     }
 }

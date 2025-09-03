@@ -9,5 +9,6 @@ namespace EcommerceApp.Services.Data.Interfaces
         Task IncreaseProductQuantityAsync(int productId, string userId);
         Task DecreaseProductQuantityAsync(int productId, string userId);
         Task RemoveProductFromCartAsync(int productId, string userId);
+        Task<int> GetCartItemCountAsync(string userId);
     }
 }

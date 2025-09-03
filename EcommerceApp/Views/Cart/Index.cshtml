@@ -33,7 +33,11 @@ else
                     {
                         <div class="row border-top border-bottom" style="margin: 0; border-top: 1px solid rgba(0,0,0,.1) !important; border-bottom: 1px solid rgba(0,0,0,.1) !important;">
                             <div class="row main align-items-center" style="margin: 0; padding: 2vh 0; width: 100%;">
+                                
                                 <div class="col-2" style="padding: 0 1vh;">
+                                    <form asp-controller="Cart" asp-action="RemoveFromCart" asp-route-id="@item.Id" method="post" style="display: inline;">
+                                        <button type="submit" class="close" style="border:none; background:none; margin-left: auto; font-size: 0.7rem; cursor: pointer;">&#10005;</button>
+                                    </form>
                                     <img class="img-fluid" src="@item.ImageUrl" style="width: 3.5rem;">
                                 </div>
                                 <div class="col" style="padding: 0 1vh;">
@@ -51,9 +55,6 @@ else
                                 <div class="col" style="padding: 0 1vh;">
                                     &euro;
                                     @item.LineTotal.ToString("F2")
-                                    <form asp-controller="Cart" asp-action="RemoveFromCart" asp-route-id="@item.Id" method="post" style="display: inline;">
-                                        <button type="submit" class="close" style="border:none; background:none; margin-left: auto; font-size: 0.7rem; cursor: pointer;">&#10005;</button>
-                                    </form>
                                 </div>
                             </div>
                         </div>
