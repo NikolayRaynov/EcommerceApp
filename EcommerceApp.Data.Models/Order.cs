@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EcommerceApp.Common.Enums;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static EcommerceApp.Common.EntityValidationConstants.Order;
@@ -31,9 +32,8 @@ namespace EcommerceApp.Data.Models
         public string ShippingAddress { get; set; } = null!;
 
         [Required]
-        [MaxLength(50)]
         [Comment("Current status of the order")]
-        public string Status { get; set; } = null!;
+        public OrderStatus Status { get; set; }
 
         public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     }
