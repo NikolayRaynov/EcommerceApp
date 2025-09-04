@@ -34,6 +34,6 @@ namespace EcommerceApp.Data.Models
         [Comment("Current status of the order")]
         public string Status { get; set; } = null!;
 
-        public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     }
 }

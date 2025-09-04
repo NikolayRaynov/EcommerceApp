@@ -4,6 +4,7 @@ using EcommerceApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommerceApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250904200548_AddOrderAndOrderItemModels")]
+    partial class AddOrderAndOrderItemModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,7 +107,7 @@ namespace EcommerceApp.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("EcommerceApp.Data.Models.OrderProduct", b =>
+            modelBuilder.Entity("EcommerceApp.Data.Models.OrderItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -134,7 +137,7 @@ namespace EcommerceApp.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderProducts");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("EcommerceApp.Data.Models.Product", b =>
@@ -427,10 +430,10 @@ namespace EcommerceApp.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EcommerceApp.Data.Models.OrderProduct", b =>
+            modelBuilder.Entity("EcommerceApp.Data.Models.OrderItem", b =>
                 {
                     b.HasOne("EcommerceApp.Data.Models.Order", "Order")
-                        .WithMany("OrderProducts")
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -504,7 +507,7 @@ namespace EcommerceApp.Data.Migrations
 
             modelBuilder.Entity("EcommerceApp.Data.Models.Order", b =>
                 {
-                    b.Navigation("OrderProducts");
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("EcommerceApp.Data.Models.Product", b =>
