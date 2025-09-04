@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static EcommerceApp.Common.EntityValidationConstants.Product;
 
 namespace EcommerceApp.Data.Models
 {
@@ -22,6 +23,7 @@ namespace EcommerceApp.Data.Models
         public virtual Product Product { get; set; } = null!;
 
         [Required]
+        [Range(MinQuantity, MaxQuantity)]
         [Comment("Quantity of the product in the order item.")]
         public int Quantity { get; set; }
 
