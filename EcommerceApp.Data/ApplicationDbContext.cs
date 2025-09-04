@@ -15,6 +15,7 @@ namespace EcommerceApp.Data
         public DbSet<Cart> Carts { get; set; } = null!;
         public DbSet<CartProduct> CartProducts { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
