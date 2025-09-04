@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static EcommerceApp.Common.EntityValidationConstants.Cart;
 using static EcommerceApp.Common.EntityValidationConstants.Product;
 
 namespace EcommerceApp.Web.ViewModels.Cart
@@ -12,7 +11,7 @@ namespace EcommerceApp.Web.ViewModels.Cart
         public int ProductId { get; set; }
 
         [Required]
-        [Range(CartItemMinQuantity, CartItemMaxQuantity)]
+        [Range(MinQuantity, MaxQuantity)]
         public int Quantity { get; set; }
 
         [Required]
