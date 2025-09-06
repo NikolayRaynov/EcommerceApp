@@ -6,7 +6,7 @@ namespace EcommerceApp.Services.Data.Interfaces
     {
         Task CreateOrderAsync(string userId, OrderCheckoutViewModel model);
         Task<ICollection<OrderHistoryViewModel>> GetUserOrderAsync(string userId);
-        Task<OrderDetailViewModel> GetOrderDetailAsunc(int orderId, string userId);
+        Task<OrderDetailViewModel> GetOrderDetailAsync(int orderId, string userId);
         Task<decimal> GetTotalAmountAsync(string userId);
     }
 }

@@ -62,7 +62,7 @@ namespace EcommerceApp.Services.Data
             await this.repository.SaveChangesAsync();
         }
 
-        public async Task<OrderDetailViewModel> GetOrderDetailAsunc(int orderId, string userId)
+        public async Task<OrderDetailViewModel> GetOrderDetailAsync(int orderId, string userId)
         {
             var order = await this.repository
                 .AllReadonly<Order>()
