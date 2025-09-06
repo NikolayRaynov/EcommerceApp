@@ -1,0 +1,39 @@
+﻿@model OrderCheckoutViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h1 class="text-center">Checkout</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card p-4">
+            <h4 class="card-title">Order Summary</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>Total Amount:</strong>
+                    <span class="float-right">@Model.TotalAmount.ToString("F2") BGN</span>
+                </li>
+            </ul>
+            <hr />
+            <form asp-action="Checkout" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="ShippingAddress" class="form-label"></label>
+                    <input asp-for="ShippingAddress" class="form-control" />
+                    <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Place Order" class="btn btn-primary w-100" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
