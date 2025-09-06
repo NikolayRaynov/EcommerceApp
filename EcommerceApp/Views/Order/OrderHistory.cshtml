@@ -1,0 +1,43 @@
+﻿@model ICollection<OrderHistoryViewModel>
+
+@{
+    ViewData["Title"] = "Order History";
+}
+
+<h1 class="text-center">My Orders</h1>
+<hr />
+
+@if (Model.Any())
+{
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th>Total Amount</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.OrderDate.ToShortDateString()</td>
+                    <td>@order.Status</td>
+                    <td>@order.TotalAmount.ToString("F2") BGN</td>
+                    <td>
+                        <a asp-action="OrderDetails" asp-route-id="@order.OrderId" class="btn btn-info btn-sm">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info text-center" role="alert">
+        You have not placed any orders yet.
+    </div>
+}
