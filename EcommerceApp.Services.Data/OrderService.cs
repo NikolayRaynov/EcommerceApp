@@ -68,7 +68,7 @@ namespace EcommerceApp.Services.Data
                 .AllReadonly<Order>()
                 .Include(op => op.OrderProducts)
                 .ThenInclude(p => p.Product)
-                .FirstOrDefaultAsync(o => o.Id == orderId);
+                .FirstOrDefaultAsync(o => o.Id == orderId && o.UserId == userId);
 
             if (order == null)
             {
