@@ -1,0 +1,52 @@
+﻿@model OrderDetailViewModel
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h1 class="text-center">Order Details</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card p-4 mb-4">
+            <h4 class="card-title">Order Information</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Order ID:</strong> @Model.OrderId</li>
+                <li class="list-group-item"><strong>Order Date:</strong> @Model.OrderDate.ToShortDateString()</li>
+                <li class="list-group-item"><strong>Status:</strong> @Model.Status</li>
+                <li class="list-group-item"><strong>Shipping Address:</strong> @Model.ShippingAddress</li>
+                <li class="list-group-item"><strong>Total Amount:</strong> @Model.TotalAmount.ToString("F2") BGN</li>
+            </ul>
+        </div>
+
+        <div class="card p-4">
+            <h4 class="card-title">Products in Order</h4>
+            <hr />
+            @if (Model.OrderItems.Any())
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <li class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <img src="@item.Image" alt="@item.ProductName" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+                                <div class="ms-3">
+                                    <h5>@item.ProductName</h5>
+                                    <p>@item.Description</p>
+                                    <p class="mb-0">Quantity: @item.Quantity</p>
+                                    <p class="mb-0">Price: @item.Price.ToString("F2") BGN</p>
+                                    <p class="mb-0">Line Total: <strong>@item.LineTotal.ToString("F2") BGN</strong></p>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No products found in this order.</p>
+            }
+        </div>
+    </div>
+</div>
