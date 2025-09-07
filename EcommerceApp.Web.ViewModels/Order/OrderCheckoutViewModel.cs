@@ -7,7 +7,7 @@ namespace EcommerceApp.Web.ViewModels.Order
         [Required]
         [Display(Name = "Shipping Address")]
         public string ShippingAddress { get; set; } = null!;
-        public string PaymentToken { get; set; } = null!;
+        //public string PaymentToken { get; set; } = null!;
         public decimal TotalAmount { get; set; }
     }
 }
