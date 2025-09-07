@@ -158,6 +158,21 @@ namespace EcommerceApp.Areas.Dashboard.Controllers
 
             return View(viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Popular()
+        {
+            var popularProducts = await this.productService.GetPopularProductsAsync();
+            return View(nameof(Index), popularProducts);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> NewArrivals()
+        {
+            var newArrivals = await this.productService.GetNewArrivalsAsync();
+            return View(nameof(Index), newArrivals);
+        }
+
         private async Task<string> UploadImageAsync(IFormFile imageFile)
         {
             var imageName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
