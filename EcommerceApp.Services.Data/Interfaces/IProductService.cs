@@ -14,5 +14,7 @@ namespace EcommerceApp.Services.Data.Interfaces
         Task<bool> DeleteProductAsync(int productId);
         Task<int> GetProductCountAsync(string? searchTerm = null);
         Task<ProductIndexViewModel?> GetProductByIdAsync(int productId);
+        Task<ICollection<ProductIndexViewModel>> GetPopularProductsAsync();
+        Task<ICollection<ProductIndexViewModel>> GetNewArrivalsAsync();
     }
 }
