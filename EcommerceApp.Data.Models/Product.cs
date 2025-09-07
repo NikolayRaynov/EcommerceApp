@@ -30,6 +30,10 @@ namespace EcommerceApp.Data.Models
         [Comment("Image URL for the product")]
         public string Image { get; set; } = string.Empty;
 
+        [Required]
+        [Comment("Date and time the product was added.")]
+        public DateTime CreatedOn { get; set; }
         public virtual ICollection<CartProduct> CartProducts { get; set; } = new List<CartProduct>();
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     }
 }
