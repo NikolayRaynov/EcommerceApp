@@ -55,7 +55,8 @@ namespace EcommerceApp.Services.Data
                 Name = model.Name,
                 Description = model.Description,
                 Price = model.Price,
-                Image = model.Image
+                Image = model.Image,
+                CreatedOn = DateTime.UtcNow
             };
 
             await this.repository.AddAsync(product);
@@ -185,6 +186,42 @@ namespace EcommerceApp.Services.Data
                 Price = product.Price,
                 Image = product.Image
             };
+        }
+
+        public async Task<ICollection<ProductIndexViewModel>> GetPopularProductsAsync()
+        {
+            var popularProducts = await this.repository.AllReadonly<Product>()
+                .OrderByDescending(op => op.OrderProducts.Sum(op => op.Quantity))
+                .Take(10)
+                .Select(p => new ProductIndexViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Image = p.Image
+                })
+                .ToListAsync();
+
+            return popularProducts;
+        }
+
+        public async Task<ICollection<ProductIndexViewModel>> GetNewArrivalsAsync()
+        {
+            var newArrivals = await this.repository.AllReadonly<Product>()
+                .OrderByDescending(p => p.CreatedOn)
+                .Take(10)
+                .Select(p => new ProductIndexViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Image = p.Image
+                })
+                .ToListAsync();
+
+            return newArrivals;
         }
     }
 }
