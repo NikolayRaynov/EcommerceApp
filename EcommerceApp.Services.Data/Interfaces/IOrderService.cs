@@ -8,5 +8,8 @@ namespace EcommerceApp.Services.Data.Interfaces
         Task<ICollection<OrderHistoryViewModel>> GetUserOrderAsync(string userId);
         Task<OrderDetailViewModel> GetOrderDetailAsync(int orderId, string userId);
         Task<decimal> GetTotalAmountAsync(string userId);
+        Task<int> GetTotalOrdersCountAsync();
+        Task<decimal> GetTotalRevenueAsync();
+        Task<ICollection<OrderHistoryViewModel>> GetRecentOrdersAsync(int count);
     }
 }

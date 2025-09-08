@@ -20,3 +20,20 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.card {
+    border-radius: 0.75rem;
+}
+
+.card-footer a {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.card-footer a:hover {
+    text-decoration: underline;
+}
+
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}

@@ -9,5 +9,6 @@
         public const int ReleaseYear = 2025;
         public const int UsernameMinLength = 4;
         public const int UsernameMaxLength = 255;
+        public const string AdminRoleName = "Admin";
     }
 }

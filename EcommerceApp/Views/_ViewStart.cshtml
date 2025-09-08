@@ -1,3 +1,11 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@using static EcommerceApp.Common.ApplicationConstants
+@{
+    if (User.Identity.IsAuthenticated && User.IsInRole(AdminRoleName))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }

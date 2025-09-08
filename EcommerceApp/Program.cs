@@ -3,6 +3,7 @@ using EcommerceApp.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static EcommerceApp.Common.ApplicationConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,9 +61,9 @@ app.Use((context, next) =>
 {
     if (context.User.Identity?.IsAuthenticated == true && context.Request.Path == "/")
     {
-        if (context.User.IsInRole("Admin"))
+        if (context.User.IsInRole(AdminRoleName))
         {
-            context.Response.Redirect("/Dashboard/Home/Index");
+            context.Response.Redirect($"/{AdminRoleName}/Home/Index");
             return Task.CompletedTask;
         }
     }

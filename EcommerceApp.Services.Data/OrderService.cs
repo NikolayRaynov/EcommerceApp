@@ -98,6 +98,25 @@ namespace EcommerceApp.Services.Data
             return viewModel;
         }
 
+        public async Task<ICollection<OrderHistoryViewModel>> GetRecentOrdersAsync(int count)
+        {
+            var recentOrders = await this.repository
+                .AllReadonly<Order>()
+                .OrderByDescending(o => o.OrderDate)
+                .Take(count)
+                .Select(o => new OrderHistoryViewModel
+                {
+                    OrderId = o.Id,
+                    OrderDate = o.OrderDate,
+                    TotalAmount = o.TotalAmount,
+                    Status = o.Status,
+                    UserId = o.UserId
+                })
+                .ToListAsync();
+
+            return recentOrders;
+        }
+
         public async Task<decimal> GetTotalAmountAsync(string userId)
         {
             var userCart = await this.repository
@@ -112,6 +131,16 @@ namespace EcommerceApp.Services.Data
             }
 
             return userCart.CartProducts.Sum(p => p.Product.Price * p.Quantity);
+        }
+
+        public async Task<int> GetTotalOrdersCountAsync()
+        {
+            return await this.repository.AllReadonly<Order>().CountAsync();
+        }
+
+        public async Task<decimal> GetTotalRevenueAsync()
+        {
+            return await this.repository.AllReadonly<Order>().SumAsync(o => o.TotalAmount);
         }
 
         public async Task<ICollection<OrderHistoryViewModel>> GetUserOrderAsync(string userId)
