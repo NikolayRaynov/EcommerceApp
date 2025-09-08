@@ -19,6 +19,8 @@ namespace EcommerceApp.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new Configuration.ProductConfiguration());
+
             base.OnModelCreating(builder);
 
             builder.Entity<CartProduct>()
