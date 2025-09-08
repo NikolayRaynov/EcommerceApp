@@ -1,4 +1,5 @@
 using EcommerceApp.Data;
+using EcommerceApp.Data.Configuration;
 using EcommerceApp.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -78,5 +79,12 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    RolesSeeder.SeedRoles(services);
+    RolesSeeder.AssignAdminRole(services);
+}
 
 app.Run();
