@@ -10,7 +10,6 @@ namespace EcommerceApp.Areas.Admin.Controllers
 {
     [Authorize(Roles = AdminRoleName)]
     [Area(AdminRoleName)]
-    [AllowAnonymous]
     public class ProductController : Controller
     {
         private readonly IProductService productService;
@@ -161,17 +160,19 @@ namespace EcommerceApp.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Popular()
         {
             var popularProducts = await productService.GetPopularProductsAsync();
-            return View(nameof(Index), popularProducts);
+            return View($"~{DefaultViewPath}", popularProducts);
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> NewArrivals()
         {
             var newArrivals = await productService.GetNewArrivalsAsync();
-            return View(nameof(Index), newArrivals);
+            return View($"~{DefaultViewPath}", newArrivals);
         }
 
         private async Task<string> UploadImageAsync(IFormFile imageFile)
