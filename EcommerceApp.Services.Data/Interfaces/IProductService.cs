@@ -5,7 +5,7 @@ namespace EcommerceApp.Services.Data.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductPageViewModel>> GetAllProductsAsync(int page = DefaultPageNumber, 
+        Task<ProductPageViewModel> GetAllProductsAsync(int pageNumber = DefaultPageNumber, 
             int pageSize = DefaultPageSize, string? searchTerm = null);
         Task<int> AddProductAsync(AddProductViewModel model);
         Task<EditProductViewModel?> GetProductForEditAsync(int productId);
@@ -14,7 +14,9 @@ namespace EcommerceApp.Services.Data.Interfaces
         Task<bool> DeleteProductAsync(int productId);
         Task<int> GetProductCountAsync(string? searchTerm = null);
         Task<ProductIndexViewModel?> GetProductByIdAsync(int productId);
-        Task<ICollection<ProductPageViewModel>> GetPopularProductsAsync();
-        Task<ICollection<ProductPageViewModel>> GetNewArrivalsAsync();
+        Task<ProductPageViewModel> GetPopularProductsAsync(int pageNumber = DefaultPageNumber,
+            int pageSize = DefaultPageSize);
+        Task<ProductPageViewModel> GetNewArrivalsAsync(int pageNumber = DefaultPageNumber,
+            int pageSize = DefaultPageSize);
     }
 }
