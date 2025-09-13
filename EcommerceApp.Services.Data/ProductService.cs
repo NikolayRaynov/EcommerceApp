@@ -16,36 +16,49 @@ namespace EcommerceApp.Services.Data
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<ProductIndexViewModel>> GetAllProductsAsync(int page = DefaultPageNumber, 
+        public async Task<ProductPageViewModel> GetAllProductsAsync(int pageNumber = DefaultPageNumber, 
             int pageSize = DefaultPageSize, string? searchTerm = null)
         {
             var query = this.repository.AllReadonly<Product>();
+
+            query = query.OrderBy(p => p.Id);
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 query = query.Where(p => p.Name.Contains(searchTerm) || p.Description.Contains(searchTerm));
             }
 
-            var products = await query
-                .Skip((page - 1) * pageSize)
+            var totalProducts = await query.CountAsync();
+
+            var productsOnPage = await query
+                .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .Select(p => new ProductIndexViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Image = p.Image,
+                    CreatedOn = p.CreatedOn
+                })
                 .ToListAsync();
 
-            var productViewModels = new List<ProductIndexViewModel>();
-
-            foreach (var product in products)
+            int totalPages = 0;
+            if (pageSize > 0)
             {
-                productViewModels.Add(new ProductIndexViewModel
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Description = product.Description,
-                    Price = product.Price,
-                    Image = product.Image
-                });
+                totalPages = (int)Math.Ceiling(totalProducts / (double)pageSize);
             }
 
-            return productViewModels;
+            var viewModel = new ProductPageViewModel
+            {
+                Products = productsOnPage,
+                TotalCount = totalProducts,
+                PageNumber = pageNumber,
+                TotalPages = totalPages
+            };
+
+            return viewModel;
         }
 
         public async Task<int> AddProductAsync(AddProductViewModel model)
@@ -188,40 +201,84 @@ namespace EcommerceApp.Services.Data
             };
         }
 
-        public async Task<ICollection<ProductIndexViewModel>> GetPopularProductsAsync()
+        public async Task<ProductPageViewModel> GetPopularProductsAsync(int pageNumber = DefaultPageNumber, int pageSize = DefaultPageSize)
         {
-            var popularProducts = await this.repository.AllReadonly<Product>()
-                .OrderByDescending(op => op.OrderProducts.Sum(op => op.Quantity))
-                .Take(10)
+            var query = this.repository.AllReadonly<Product>()
+                .Where(p => p.OrderProducts.Sum(op => op.Quantity) >= 3)
+                .OrderByDescending(p => p.OrderProducts.Sum(op => op.Quantity));
+
+            var totalProducts = await query.CountAsync();
+
+            var productsOnPage = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .Select(p => new ProductIndexViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
                     Description = p.Description,
                     Price = p.Price,
-                    Image = p.Image
+                    Image = p.Image,
+                    CreatedOn = p.CreatedOn
                 })
                 .ToListAsync();
 
-            return popularProducts;
+            int totalPages = 0;
+            if (pageSize > 0)
+            {
+                totalPages = (int)Math.Ceiling(totalProducts / (double)pageSize);
+            }
+
+            var viewModel = new ProductPageViewModel
+            {
+                Products = productsOnPage,
+                TotalCount = totalProducts,
+                PageNumber = pageNumber,
+                TotalPages = totalPages
+            };
+
+            return viewModel;
         }
 
-        public async Task<ICollection<ProductIndexViewModel>> GetNewArrivalsAsync()
+        public async Task<ProductPageViewModel> GetNewArrivalsAsync(int pageNumber = DefaultPageNumber, int pageSize = DefaultPageSize)
         {
-            var newArrivals = await this.repository.AllReadonly<Product>()
-                .OrderByDescending(p => p.CreatedOn)
-                .Take(10)
+            var lastMonth = DateTime.UtcNow.AddMonths(-1);
+
+            var query = this.repository.AllReadonly<Product>()
+                .Where(p => p.CreatedOn >= lastMonth)
+                .OrderByDescending(p => p.CreatedOn);
+
+            var totalProducts = await query.CountAsync();
+
+            var productsOnPage = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .Select(p => new ProductIndexViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
                     Description = p.Description,
                     Price = p.Price,
-                    Image = p.Image
+                    Image = p.Image,
+                    CreatedOn = p.CreatedOn
                 })
                 .ToListAsync();
 
-            return newArrivals;
+            int totalPages = 0;
+            if (pageSize > 0)
+            {
+                totalPages = (int)Math.Ceiling(totalProducts / (double)pageSize);
+            }
+
+            var viewModel = new ProductPageViewModel
+            {
+                Products = productsOnPage,
+                TotalCount = totalProducts,
+                PageNumber = pageNumber,
+                TotalPages = totalPages
+            };
+
+            return viewModel;
         }
     }
 }

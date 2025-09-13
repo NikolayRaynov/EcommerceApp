@@ -3,7 +3,6 @@ using EcommerceApp.Services.Data.Interfaces;
 using EcommerceApp.Web.ViewModels.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using static EcommerceApp.Common.ApplicationConstants;
 
 namespace EcommerceApp.Areas.Admin.Controllers
@@ -23,9 +22,9 @@ namespace EcommerceApp.Areas.Admin.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = DefaultPageNumber, int pageSize = DefaultPageSize)
         {
-            var products = await productService.GetAllProductsAsync();
+            var products = await productService.GetAllProductsAsync(pageNumber, pageSize);
             return View(products);
         }
 
