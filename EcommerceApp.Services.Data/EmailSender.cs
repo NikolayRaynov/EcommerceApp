@@ -18,6 +18,12 @@ namespace EcommerceApp.Services.Data
             var smtpUsername = configuration["EmailSettings:SmtpUsername"];
             var smtpPassword = configuration["EmailSettings:SmtpPassword"];
 
+            if (string.IsNullOrWhiteSpace(senderEmail) || string.IsNullOrWhiteSpace(smtpUsername) 
+                    || string.IsNullOrWhiteSpace(smtpPassword))
+            {
+                return;
+            }
+
             var emailToSend = new MimeMessage();
 
             emailToSend.From.Add(MailboxAddress.Parse(senderEmail));
