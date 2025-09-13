@@ -32,15 +32,7 @@ namespace EcommerceApp.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            var products = await productService.GetAllProductsAsync();
-            var model = new AddProductViewModel
-            {
-                Name = string.Empty,
-                Description = string.Empty,
-                Price = 0.0m,
-                Image = string.Empty
-            };
-            return View(model);
+            return View(new AddProductViewModel());
         }
 
         [HttpPost]

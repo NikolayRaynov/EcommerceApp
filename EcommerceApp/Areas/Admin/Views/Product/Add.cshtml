@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Add New Product";
-	Layout = "_Layout";
 }
 
 <div class="container my-5">
@@ -11,7 +10,7 @@
             <h1 class="text-center mb-4">Add New Product</h1>
             <div class="card shadow-lg border-0 rounded-3">
                 <div class="card-body p-4 p-md-5">
-                    <form asp-action="Add" enctype="multipart/form-data">
+                    <form asp-area="Admin" asp-controller="Product" asp-action="Add" enctype="multipart/form-data">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
 
                         <div class="form-floating mb-4">
@@ -39,7 +38,7 @@
                         </div>
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg">Add Product</button>
+                            <button type="submit" class="btn btn-primary">Add Product</button>
                             <a asp-action="Index" class="btn btn-secondary btn-lg">Back to List</a>
                         </div>
                     </form>
