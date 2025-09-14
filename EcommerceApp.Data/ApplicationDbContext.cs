@@ -21,6 +21,7 @@ namespace EcommerceApp.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new Configuration.ProductConfiguration());
+            builder.ApplyConfiguration(new Configuration.CategoryConfiguration());
 
             base.OnModelCreating(builder);
 
