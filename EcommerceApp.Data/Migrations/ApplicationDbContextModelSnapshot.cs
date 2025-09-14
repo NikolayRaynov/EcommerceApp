@@ -100,8 +100,13 @@ namespace EcommerceApp.Data.Migrations
                         },
                         new
                         {
-                            Id = 7,
+                            Id = 4,
                             Name = "Games"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Smartphones"
                         });
                 });
 
@@ -184,8 +189,9 @@ namespace EcommerceApp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int")
+                        .HasComment("Identifier of the category to which the product belongs.");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2")
@@ -223,135 +229,150 @@ namespace EcommerceApp.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2025, 9, 13, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(6846),
+                            CategoryId = 1,
+                            CreatedOn = new DateTime(2025, 9, 13, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5483),
                             Description = "This is the description for Product 1. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/10527507-419c-4e4f-8131-a8b66a6d04f9.png",
+                            Image = "/images/Products/f871244d-cfb8-4742-a8fb-f4552b71714d.png",
                             Name = "Product Name 1",
                             Price = 12.50m
                         },
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2025, 9, 12, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(6870),
+                            CategoryId = 2,
+                            CreatedOn = new DateTime(2025, 9, 12, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5517),
                             Description = "This is the description for Product 2. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/d47efbe4-1506-484b-b8f7-1e0b86bcce91.png",
+                            Image = "/images/Products/dd802a7d-2080-4eeb-9d27-42ace5345e2f.png",
                             Name = "Product Name 2",
                             Price = 15.00m
                         },
                         new
                         {
                             Id = 3,
-                            CreatedOn = new DateTime(2025, 9, 11, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(6955),
+                            CategoryId = 3,
+                            CreatedOn = new DateTime(2025, 9, 11, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5527),
                             Description = "This is the description for Product 3. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/8dc2d3d2-c49f-4b72-af9d-b8d3e168d848.png",
+                            Image = "/images/Products/2edfdba0-1cb7-479f-aa7a-299a65b7dc76.png",
                             Name = "Product Name 3",
                             Price = 17.50m
                         },
                         new
                         {
                             Id = 4,
-                            CreatedOn = new DateTime(2025, 9, 10, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(6963),
+                            CategoryId = 4,
+                            CreatedOn = new DateTime(2025, 9, 10, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5536),
                             Description = "This is the description for Product 4. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/0132eddb-7e96-4708-8e5f-c7edf780cb2d.png",
+                            Image = "/images/Products/491e796c-0bc5-4a23-b800-97f12c90ee56.png",
                             Name = "Product Name 4",
                             Price = 20.00m
                         },
                         new
                         {
                             Id = 5,
-                            CreatedOn = new DateTime(2025, 9, 9, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(6969),
+                            CategoryId = 5,
+                            CreatedOn = new DateTime(2025, 9, 9, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5544),
                             Description = "This is the description for Product 5. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/1626c67f-ad55-4dba-9694-f10e0a45a688.png",
+                            Image = "/images/Products/8321090d-2190-43cb-ab9b-78304c3cd4f8.png",
                             Name = "Product Name 5",
                             Price = 22.50m
                         },
                         new
                         {
                             Id = 6,
-                            CreatedOn = new DateTime(2025, 9, 8, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(6978),
+                            CategoryId = 1,
+                            CreatedOn = new DateTime(2025, 9, 8, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5576),
                             Description = "This is the description for Product 6. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/2c109b49-d195-4ba2-8e10-d9373c4f839b.png",
+                            Image = "/images/Products/7d5eb686-84e1-4d12-aca5-b68779abf536.png",
                             Name = "Product Name 6",
                             Price = 25.00m
                         },
                         new
                         {
                             Id = 7,
-                            CreatedOn = new DateTime(2025, 9, 7, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(6983),
+                            CategoryId = 2,
+                            CreatedOn = new DateTime(2025, 9, 7, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5585),
                             Description = "This is the description for Product 7. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/461cbf45-58eb-4c0e-aa3a-07c98490a550.png",
+                            Image = "/images/Products/decf664a-ee22-47d7-9dbc-ee2d6e6220ce.png",
                             Name = "Product Name 7",
                             Price = 27.50m
                         },
                         new
                         {
                             Id = 8,
-                            CreatedOn = new DateTime(2025, 9, 6, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(6989),
+                            CategoryId = 3,
+                            CreatedOn = new DateTime(2025, 9, 6, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5594),
                             Description = "This is the description for Product 8. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/8afcddf3-b055-42e1-947a-8cc8d2df5c8a.png",
+                            Image = "/images/Products/63cfbf4c-8b1a-4e7b-b795-1ec7016c24c9.png",
                             Name = "Product Name 8",
                             Price = 30.00m
                         },
                         new
                         {
                             Id = 9,
-                            CreatedOn = new DateTime(2025, 9, 5, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(6994),
+                            CategoryId = 4,
+                            CreatedOn = new DateTime(2025, 9, 5, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5601),
                             Description = "This is the description for Product 9. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/679983e5-b543-4eac-9ade-fc68bb411e50.png",
+                            Image = "/images/Products/979ebda9-3b40-49f4-b7af-22428c1099c0.png",
                             Name = "Product Name 9",
                             Price = 32.50m
                         },
                         new
                         {
                             Id = 10,
-                            CreatedOn = new DateTime(2025, 9, 4, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(7003),
+                            CategoryId = 5,
+                            CreatedOn = new DateTime(2025, 9, 4, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5772),
                             Description = "This is the description for Product 10. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/53af54dc-0995-4ae0-9f0f-6f2f42f0e1c3.png",
+                            Image = "/images/Products/66b05edf-56bc-4ff6-aca3-1a7f3406d47d.png",
                             Name = "Product Name 10",
                             Price = 35.00m
                         },
                         new
                         {
                             Id = 11,
-                            CreatedOn = new DateTime(2025, 9, 3, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(7013),
+                            CategoryId = 1,
+                            CreatedOn = new DateTime(2025, 9, 3, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5782),
                             Description = "This is the description for Product 11. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/829937a5-b29c-486d-924a-b3545175d358.png",
+                            Image = "/images/Products/6a8eac93-bfe0-49d6-a541-2b17edc32dae.png",
                             Name = "Product Name 11",
                             Price = 37.50m
                         },
                         new
                         {
                             Id = 12,
-                            CreatedOn = new DateTime(2025, 9, 2, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(7018),
+                            CategoryId = 2,
+                            CreatedOn = new DateTime(2025, 9, 2, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5791),
                             Description = "This is the description for Product 12. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/44d8c2b2-bbe0-4c6f-8dbc-f2775664534a.png",
+                            Image = "/images/Products/fd0b0f9f-03c8-4e33-b11d-e492fdc41f95.png",
                             Name = "Product Name 12",
                             Price = 40.00m
                         },
                         new
                         {
                             Id = 13,
-                            CreatedOn = new DateTime(2025, 9, 1, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(7024),
+                            CategoryId = 3,
+                            CreatedOn = new DateTime(2025, 9, 1, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5801),
                             Description = "This is the description for Product 13. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/4de91be7-dab0-4020-88c4-ebc54634cf48.png",
+                            Image = "/images/Products/075876ae-5c2d-442a-814d-e568ea15559a.png",
                             Name = "Product Name 13",
                             Price = 42.50m
                         },
                         new
                         {
                             Id = 14,
-                            CreatedOn = new DateTime(2025, 8, 31, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(7029),
+                            CategoryId = 4,
+                            CreatedOn = new DateTime(2025, 8, 31, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5815),
                             Description = "This is the description for Product 14. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/9358c8ce-f914-475e-9559-75848f8d67fd.png",
+                            Image = "/images/Products/2679a9d7-d26c-4031-9fc6-63b4388d368c.png",
                             Name = "Product Name 14",
                             Price = 45.00m
                         },
                         new
                         {
                             Id = 15,
-                            CreatedOn = new DateTime(2025, 8, 30, 13, 8, 0, 724, DateTimeKind.Utc).AddTicks(7034),
+                            CategoryId = 5,
+                            CreatedOn = new DateTime(2025, 8, 30, 14, 14, 42, 179, DateTimeKind.Utc).AddTicks(5824),
                             Description = "This is the description for Product 15. It's a high-quality product with excellent features.",
-                            Image = "/images/Products/6828792b-ae86-413d-bbe0-1d8dc7aa77a2.png",
+                            Image = "/images/Products/22e47208-9b1a-4f99-8bb8-18ea69b1fd42.png",
                             Name = "Product Name 15",
                             Price = 47.50m
                         });
@@ -633,9 +654,13 @@ namespace EcommerceApp.Data.Migrations
 
             modelBuilder.Entity("EcommerceApp.Data.Models.Product", b =>
                 {
-                    b.HasOne("EcommerceApp.Data.Models.Category", null)
+                    b.HasOne("EcommerceApp.Data.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

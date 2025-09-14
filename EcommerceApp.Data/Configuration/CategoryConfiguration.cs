@@ -23,7 +23,8 @@ namespace EcommerceApp.Data.Configuration
                 new Category { Id = 1, Name = "Laptops" },
                 new Category { Id = 2, Name = "Monitors" },
                 new Category { Id = 3, Name = "Keyboards" },
-                new Category { Id = 7, Name = "Games" },
+                new Category { Id = 4, Name = "Games" },
+                new Category { Id = 5, Name = "Smartphones" },
             };
             return categories;
         }

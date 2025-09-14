@@ -23,6 +23,7 @@ namespace EcommerceApp.Data.Configuration
 
                 var imageGuid = Guid.NewGuid().ToString();
                 var productImagePath = $"/images/Products/{imageGuid}.png";
+                var categoryId = (i - 1) % 5 + 1;
 
                 products.Add(new Product
                 {
@@ -31,7 +32,8 @@ namespace EcommerceApp.Data.Configuration
                     Description = productDescription,
                     Price = productPrice,
                     Image = productImagePath,
-                    CreatedOn = DateTime.UtcNow.AddDays(-i)
+                    CreatedOn = DateTime.UtcNow.AddDays(-i),
+                    CategoryId = categoryId
                 });
             }
 
