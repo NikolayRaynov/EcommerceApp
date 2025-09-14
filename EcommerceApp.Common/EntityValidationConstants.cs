@@ -18,5 +18,11 @@
             public const int OrderAddressMinLength = 10;
             public const int OrderAddressMaxLength = 255;
         }
+
+        public static class Category
+        {
+            public const int CategoryNameMinLength = 3;
+            public const int CategoryNameMaxLength = 45;
+        }
     }
 }
