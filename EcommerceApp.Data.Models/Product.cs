@@ -33,6 +33,13 @@ namespace EcommerceApp.Data.Models
         [Required]
         [Comment("Date and time the product was added.")]
         public DateTime CreatedOn { get; set; }
+
+        [Required]
+        [Comment("Identifier of the category to which the product belongs.")]
+        public int CategoryId { get; set; }
+        [ForeignKey(nameof(CategoryId))]
+        public virtual Category Category { get; set; } = null!;
+
         public virtual ICollection<CartProduct> CartProducts { get; set; } = new List<CartProduct>();
         public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     }
