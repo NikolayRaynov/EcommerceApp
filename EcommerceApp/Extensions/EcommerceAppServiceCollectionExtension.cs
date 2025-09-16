@@ -16,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IUserService, UserService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IFileService, FileService>();
 
             return services;
         }
