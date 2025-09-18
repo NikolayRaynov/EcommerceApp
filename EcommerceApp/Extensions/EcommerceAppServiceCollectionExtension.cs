@@ -17,6 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<IUserService, UserService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             return services;
         }
