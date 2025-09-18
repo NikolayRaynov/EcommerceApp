@@ -6,7 +6,7 @@ namespace EcommerceApp.Services.Data.Interfaces
     {
         Task<IEnumerable<CategoryViewModel>> GetAllAsync();
         Task<CategoryViewModel?> GetByIdAsync(int id);
-        Task<EditCategoryViewModel?> GetCategoryForAsync(int id);
+        Task<EditCategoryViewModel?> GetCategoryForEditAsync(int id);
         Task AddAsync(AddCategoryViewModel model, string webRootPath);
         Task UpdateAsync(int id, EditCategoryViewModel model, string webRootPath);
         Task<bool> ExistsByIdAsync(int id);

@@ -80,7 +80,7 @@ namespace EcommerceApp.Services.Data
             return category;
         }
 
-        public async Task<EditCategoryViewModel?> GetCategoryForAsync(int id)
+        public async Task<EditCategoryViewModel?> GetCategoryForEditAsync(int id)
         {
             var categoryForEdit = await repository
                 .AllReadonly<Category>()
