@@ -13,7 +13,7 @@ namespace EcommerceApp.Areas.Admin.Controllers
         private readonly ICategoryService categoryService;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        public CategoryManagementController(ICategoryService categoryService, IWebHostEnvironment iWebHostEnvironment)
+        public CategoryManagementController(ICategoryService categoryService, IWebHostEnvironment webHostEnvironment)
         {
             this.categoryService = categoryService;
             this.webHostEnvironment = webHostEnvironment;
