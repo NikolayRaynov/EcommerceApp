@@ -1,4 +1,10 @@
-﻿#wrapper {
+﻿html, body {
+    height: 100%; /* Уверете се, че html и body са 100% от височината на viewport-а */
+    margin: 0;
+    padding: 0;
+}
+
+#wrapper {
     overflow-x: hidden;
 }
 
