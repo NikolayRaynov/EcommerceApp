@@ -5,6 +5,8 @@
 @inject RoleManager<IdentityRole> roleManager
 
 @{
+	ViewBag.Title = "Users";
+
     IEnumerable<string?> allRoles = await roleManager.Roles
         .Select(r => r.Name)
         .ToArrayAsync();
