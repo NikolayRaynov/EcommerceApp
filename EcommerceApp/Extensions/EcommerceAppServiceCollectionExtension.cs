@@ -2,6 +2,7 @@
 using EcommerceApp.Data.Repository.Interfaces;
 using EcommerceApp.Services.Data;
 using EcommerceApp.Services.Data.Interfaces;
+using Ganss.Xss;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -18,6 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IHtmlSanitizer, HtmlSanitizer>();
 
             return services;
         }
