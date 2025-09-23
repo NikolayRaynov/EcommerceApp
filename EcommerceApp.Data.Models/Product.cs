@@ -42,5 +42,6 @@ namespace EcommerceApp.Data.Models
 
         public virtual ICollection<CartProduct> CartProducts { get; set; } = new List<CartProduct>();
         public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
+        public virtual ICollection<Image> Images { get; set; } = new List<Image>();
     }
 }
