@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using EcommerceApp.Web.ViewModels.Category;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using static EcommerceApp.Common.EntityValidationConstants.Product;
 
@@ -26,6 +26,8 @@ namespace EcommerceApp.Web.ViewModels.Product
         public string Image { get; set; } = string.Empty;
 
         [Required]
-        public IFormFile ImageFile { get; set; }
+        public int CategoryId { get; set; }
+        public IEnumerable<IFormFile> Images { get; set; } = new List<IFormFile>();
+        public IEnumerable<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
     }
 }
