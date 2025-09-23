@@ -6,7 +6,8 @@
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
-        public string Image { get; set; } = string.Empty;
+        public List<string> ImageUrls { get; set; } = new List<string>();
         public DateTime CreatedOn { get; set; }
+        public string UserId { get; set; } = string.Empty;
     }
 }
