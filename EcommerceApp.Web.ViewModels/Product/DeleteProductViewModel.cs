@@ -20,8 +20,7 @@ namespace EcommerceApp.Web.ViewModels.Product
         [Required]
         public decimal Price { get; set; }
 
-        [Required]
         [MaxLength(ImageMaxLength)]
-        public string Image { get; set; } = string.Empty;
+        public List<string> ImageUrls { get; set; } = new List<string>();
     }
 }
