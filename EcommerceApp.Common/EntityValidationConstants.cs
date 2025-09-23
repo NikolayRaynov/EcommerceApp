@@ -24,5 +24,12 @@
             public const int CategoryNameMinLength = 3;
             public const int CategoryNameMaxLength = 45;
         }
+
+        public static class Image
+        {
+            public const int ImageUrlMaxLength = 2083;
+            public const int ImageDescriptionMinLength = 10;
+            public const int ImageDescriptionMaxLength = 500;
+        }
     }
 }
