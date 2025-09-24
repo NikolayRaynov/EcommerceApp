@@ -40,8 +40,14 @@ namespace EcommerceApp.Data.Models
         [ForeignKey(nameof(CategoryId))]
         public virtual Category Category { get; set; } = null!;
 
+        [Comment("Identifier of the favorite product")]
+        public int? FavoriteProductId { get; set; }
+        [ForeignKey(nameof(FavoriteProductId))]
+        public virtual FavoriteProduct? FavoriteProduct { get; set; }
+
         public virtual ICollection<CartProduct> CartProducts { get; set; } = new List<CartProduct>();
         public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
         public virtual ICollection<Image> Images { get; set; } = new List<Image>();
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }
