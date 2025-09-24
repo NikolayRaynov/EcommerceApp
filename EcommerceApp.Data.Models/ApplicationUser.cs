@@ -5,5 +5,7 @@ namespace EcommerceApp.Data.Models
     public class ApplicationUser : IdentityUser
     {
         public Cart Cart { get; set; } = null!;
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public virtual ICollection<FavoriteProduct> FavoriteProducts { get; set; } = new List<FavoriteProduct>();
     }
 }
