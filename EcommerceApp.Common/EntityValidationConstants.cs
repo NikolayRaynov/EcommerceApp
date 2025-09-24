@@ -31,5 +31,10 @@
             public const int ImageDescriptionMinLength = 10;
             public const int ImageDescriptionMaxLength = 500;
         }
+
+        public static class Review
+        {
+            public const int CommentMaxLength = 500;
+        }
     }
 }
