@@ -19,6 +19,7 @@ namespace EcommerceApp.Data
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Image> Images { get; set; } = null!;
         public DbSet<FavoriteProduct> FavoriteProducts { get; set; } = null!;
+        public DbSet<Review> Reviews { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
