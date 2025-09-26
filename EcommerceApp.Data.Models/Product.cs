@@ -45,6 +45,10 @@ namespace EcommerceApp.Data.Models
         [ForeignKey(nameof(FavoriteProductId))]
         public virtual FavoriteProduct? FavoriteProduct { get; set; }
 
+        [Required]
+        [Comment("The current stock quantity of the product.")]
+        public int StockQuantity { get; set; }
+
         public virtual ICollection<CartProduct> CartProducts { get; set; } = new List<CartProduct>();
         public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
         public virtual ICollection<Image> Images { get; set; } = new List<Image>();
