@@ -19,6 +19,9 @@ namespace EcommerceApp.Web.ViewModels.Product
 
         [Required]
         public decimal Price { get; set; }
+
+        [Required]
+        public int StockQuantity { get; set; }
         public List<string> ImageUrls { get; set; } = new List<string>();
     }
 }

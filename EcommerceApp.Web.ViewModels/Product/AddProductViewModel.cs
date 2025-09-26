@@ -27,6 +27,9 @@ namespace EcommerceApp.Web.ViewModels.Product
 
         [Required]
         public int CategoryId { get; set; }
+
+        [Required]
+        public int StockQuantity { get; set; }
         public IEnumerable<IFormFile> Images { get; set; } = new List<IFormFile>();
         public IEnumerable<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
     }
