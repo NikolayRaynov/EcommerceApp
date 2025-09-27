@@ -7,42 +7,64 @@
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <h1 class="text-center mb-4">Delete Product</h1>
+            <h1 class="text-center mb-4 text-danger">Delete Product</h1>
             <div class="card shadow-lg border-0 rounded-3">
                 <div class="card-body p-4 p-md-5">
-                    <dl class="row">
-                        <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.Image)
-                        </dt>
-                        <dd class="col-sm-8">
-                            <img src="@Model.Image" alt="Product Image" style="max-width: 200px;" class="d-block border rounded" />
-                        </dd>
-                        <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.Name)
-                        </dt>
-                        <dd class="col-sm-8">
-                            @Html.DisplayFor(model => model.Name)
-                        </dd>
-                        <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.Description)
-                        </dt>
-                        <dd class="col-sm-8">
-                            @Html.DisplayFor(model => model.Description)
-                        </dd>
-                        <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.Price)
-                        </dt>
-                        <dd class="col-sm-8">
-                            @Html.DisplayFor(model => model.Price)
-                        </dd>
-                    </dl>
+                    <div class="mb-4 text-center">
+                        @if (Model.ImageUrls != null && Model.ImageUrls.Any())
+                        {
+                            <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner rounded">
+                                    @for (int i = 0; i < Model.ImageUrls.Count; i++)
+                                    {
+                                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                                            <img src="@Model.ImageUrls[i]" class="d-block w-100"
+                                                 alt="@Model.Name"
+                                                 style="height: 250px; object-fit: fill; border-radius: 8px;">
+                                        </div>
+                                    }
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </button>
+                            </div>
+                        }
+                        else
+                        {
+                            <img src="~/images/NoPhoto.jpg" class="img-fluid rounded"
+                                 alt="@Model.Name" style="height: 250px; object-fit: fill;">
+                        }
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Name</label>
+                        <p class="form-control-plaintext">@Model.Name</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Description</label>
+                        <p class="form-control-plaintext">@Model.Description</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Price</label>
+                        <p class="form-control-plaintext text-success fw-semibold">@Model.Price.ToString("C")</p>
+                    </div>
+
+                    <div class="alert alert-danger mt-4">
+                        Are you sure you want to delete this product?
+                    </div>
                 </div>
+
                 <div class="card-footer d-flex justify-content-between p-4">
                     <form asp-action="Delete" method="post">
                         <input type="hidden" asp-for="Id" />
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger btn-lg">Delete</button>
                     </form>
-                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    <a asp-action="Index" class="btn btn-secondary btn-lg">Back to List</a>
                 </div>
             </div>
         </div>

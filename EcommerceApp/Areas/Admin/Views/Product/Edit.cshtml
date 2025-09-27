@@ -4,6 +4,7 @@
     ViewBag.Title = "Edit Product";
 }
 
+<link href="css/editProduct.css" rel="stylesheet" />
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
@@ -13,12 +14,34 @@
                     <form asp-action="Edit" enctype="multipart/form-data">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
                         <input type="hidden" asp-for="Id" />
-                        <input type="hidden" asp-for="Image" />
 
                         <div class="form-floating mb-4">
                             <input asp-for="Name" class="form-control" />
                             <label asp-for="Name" class="control-label"></label>
                             <span asp-validation-for="Name" class="text-danger mt-1"></span>
+                        </div>
+
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                @for (int i = 0; i < Model.ImageUrls.Count; i++)
+                                {
+                                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                                        <img src="@Model.ImageUrls[i]" class="d-block w-100" style="width: 100%; height: 400px; object-fit: fill;" alt="Снимка @i">
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <button type="button" class="btn btn-danger delete-image delete-button" data-id="@Model.Id" data-url="@Model.ImageUrls[i]">Delete</button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                         </div>
 
                         <div class="form-floating mb-4">
@@ -32,16 +55,14 @@
                             <label asp-for="Price" class="control-label"></label>
                             <span asp-validation-for="Price" class="text-danger mt-1"></span>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Image:</label>
-                            <img src="@Model.Image" alt="" style="max-width: 200px;" class="d-block border rounded" />
+
+                        <div class="col-md-6 mb-3 mt-3">
+                            <label for="newImages" class="form-label">Add new photos</label>
+                            <input type="file" name="NewImages" class="form-control" multiple />
                         </div>
-                        <div class="mb-4">
-                            <label asp-for="ImageFile" class="control-label">Upload image</label>
-                            <input asp-for="ImageFile" class="form-control" />
-                            <span asp-validation-for="ImageFile" class="text-danger mt-1"></span>
-                        </div>
+
                         <div class="d-grid gap-2">
+                            <input type="hidden" asp-for="Id" />
                             <button type="submit" class="btn btn-primary">Save</button>
                             <a asp-action="Index" class="btn btn-secondary btn-lg">Back to List</a>
                         </div>
@@ -53,5 +74,52 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $(".delete-image").click(function () {
+                var destinationId = $(this).data("id");
+                var imageUrl = $(this).data("url");
+                var button = $(this);
+
+                $.ajax({
+                    url: "/Admin/Product/DeleteImage",
+                    type: "POST",
+                    data: { id: destinationId, imageUrl: imageUrl },
+                    headers: {
+                        "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function () {
+                        var carouselItem = button.closest(".carousel-item");
+                        var isActive = carouselItem.hasClass("active");
+
+                        carouselItem.remove();
+
+                        if (isActive) {
+                            $(".carousel-item").first().addClass("active");
+                        }
+                    },
+                    error: function () {
+                        alert("An error occurred while deleting the image.");
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var textarea = document.querySelector("textarea");
+
+            function adjustHeight(textarea) {
+                textarea.style.height = "auto";
+                textarea.style.height = (textarea.scrollHeight) + "px";
+            }
+
+            adjustHeight(textarea);
+
+            textarea.addEventListener("input", function () {
+                adjustHeight(textarea);
+            });
+        });
+    </script>
 }

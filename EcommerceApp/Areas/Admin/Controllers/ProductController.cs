@@ -1,8 +1,11 @@
 ﻿using EcommerceApp.Data.Repository.Interfaces;
 using EcommerceApp.Services.Data.Interfaces;
+using EcommerceApp.Web.ViewModels.Category;
 using EcommerceApp.Web.ViewModels.Product;
+using Ganss.Xss;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using static EcommerceApp.Common.ApplicationConstants;
 
 namespace EcommerceApp.Areas.Admin.Controllers
@@ -13,26 +16,59 @@ namespace EcommerceApp.Areas.Admin.Controllers
     {
         private readonly IProductService productService;
         private readonly IRepository repository;
+        private readonly ICategoryService categoryService;
+        private readonly IHtmlSanitizer htmlSanitizer;
 
-        public ProductController(IProductService productService, IRepository repository)
+        public ProductController(IProductService productService, 
+                                 IRepository repository, 
+                                 ICategoryService categoryService, 
+                                 IHtmlSanitizer htmlSanitizer)
         {
             this.productService = productService;
             this.repository = repository;
+            this.categoryService = categoryService;
+            this.htmlSanitizer = htmlSanitizer;
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index(int pageNumber = DefaultPageNumber, int pageSize = DefaultPageSize)
+        public async Task<IActionResult> Index(int? categoryId, int pageNumber = DefaultPageNumber)
         {
-            var products = await productService.GetAllProductsAsync(pageNumber, pageSize);
-            return View(products);
+            try
+            {
+                var allCategories = await categoryService.GetAllAsync();
+
+                ViewBag.Categories = new SelectList(allCategories, "Id", "Name", categoryId);
+                ViewBag.SelectedCategoryId = categoryId;
+
+                var products = await productService.GetAllProductsAsync(pageNumber, DefaultPageSize, categoryId);
+                return View(products);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Home", new { area = "", statusCode = 500 });
+            }
+            
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            return View(new AddProductViewModel());
+            var categories = await categoryService.GetAllAsync();
+
+            var viewModel = new AddProductViewModel
+            {
+                Categories = categories
+                    .Select(c => new CategoryViewModel
+                    {
+                        Id = c.Id,
+                        Name = c.Name
+                    })
+                    .ToList()
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -40,9 +76,19 @@ namespace EcommerceApp.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.Image = await UploadImageAsync(model.ImageFile);
-                await productService.AddProductAsync(model);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    await productService.AddProductAsync(model, model.Images.ToList());
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (InvalidOperationException)
+                {
+                    return RedirectToAction("Error", "Home", new { statusCode = 404 });
+                }
+                catch (Exception)
+                {
+                    return RedirectToAction("Error", "Home", new { statusCode = 500 });
+                }
             }
 
             return View(model);
@@ -54,7 +100,7 @@ namespace EcommerceApp.Areas.Admin.Controllers
             var product = await productService.GetProductForEditAsync(id);
             if (product == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Home", new { statusCode = 404 });
             }
 
             var viewModel = new EditProductViewModel
@@ -63,29 +109,32 @@ namespace EcommerceApp.Areas.Admin.Controllers
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
-                Image = product.Image
+                ImageUrls = product.ImageUrls.ToList()
             };
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditProductViewModel model)
+        public async Task<IActionResult> Edit(EditProductViewModel model, List<IFormFile> newImages)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (model.ImageFile != null)
-                    {
-                        model.Image = await UploadImageAsync(model.ImageFile);
-                    }
-
-                    await productService.UpdateProductAsync(model);
+                    await productService.UpdateProductAsync(model, newImages);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return RedirectToAction("Error", "Home", new { statusCode = 403 });
+                }
+                catch (InvalidOperationException)
+                {
+                    return RedirectToAction("Error", "Home", new { statusCode = 404 });
                 }
                 catch (Exception)
                 {
-                    return NotFound();
+                    return RedirectToAction("Error", "Home", new { statusCode = 500 });
                 }
             }
 
@@ -95,22 +144,29 @@ namespace EcommerceApp.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await productService.GetProductForDeleteAsync(id);
-            if (product == null)
+            try
             {
-                return NotFound();
+                var product = await productService.GetProductForDeleteAsync(id);
+                if (product == null)
+                {
+                    return RedirectToAction("Error", "Home", new { statusCode = 404 });
+                }
+
+                var viewModel = new DeleteProductViewModel
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    ImageUrls = product.ImageUrls
+                };
+
+                return View(viewModel);
             }
-
-            var viewModel = new DeleteProductViewModel
+            catch (Exception)
             {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                Image = product.Image
-            };
-
-            return View(viewModel);
+                return RedirectToAction("Error", "Home", new { statusCode = 500 });
+            }
         }
 
         [HttpPost]
@@ -120,34 +176,47 @@ namespace EcommerceApp.Areas.Admin.Controllers
             {
                 await productService.DeleteProductAsync(model.Id);
             }
+            catch (UnauthorizedAccessException)
+            {
+                return RedirectToAction("Error", "Home", new { statusCode = 403 });
+            }
             catch (Exception)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Home", new { statusCode = 500 });
             }
 
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
-            var product = await productService.GetProductByIdAsync(id);
-
-            if (product == null)
+            try
             {
-                return NotFound();
+                var product = await productService.GetProductByIdAsync(id);
+
+                if (product == null)
+                {
+                    return RedirectToAction("Error", "Home", new { statusCode = 404 });
+                }
+
+                var viewModel = new ProductDetailsViewModel
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    ImageUrls = product.ImageUrls,
+                    Reviews = product.Reviews
+                };
+
+                return View(viewModel);
             }
-
-            var viewModel = new ProductDetailsViewModel
+            catch (Exception)
             {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                Image = product.Image
-            };
-
-            return View(viewModel);
+                return RedirectToAction("Error", "Home", new { statusCode = 500 });
+            }
         }
 
         [HttpGet]
@@ -166,24 +235,22 @@ namespace EcommerceApp.Areas.Admin.Controllers
             return View($"~{DefaultViewPath}", newArrivals);
         }
 
-        private async Task<string> UploadImageAsync(IFormFile imageFile)
+        [HttpPost]
+        public async Task<IActionResult> DeleteImage(int id, string imageUrl)
         {
-            var imageName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-            var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), DefaultImagePath);
-
-            if (!Directory.Exists(directoryPath))
+            try
             {
-                Directory.CreateDirectory(directoryPath);
+                await productService.DeleteImageAsync(id, imageUrl);
+                return RedirectToAction(nameof(Edit), new { id });
             }
-
-            var savePath = Path.Combine(directoryPath, imageName);
-
-            using (var stream = new FileStream(savePath, FileMode.Create))
+            catch (UnauthorizedAccessException)
             {
-                await imageFile.CopyToAsync(stream);
+                return RedirectToAction("Error", "Home", new { statusCode = 403 });
             }
-
-            return $"/images/Products/{imageName}";
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Home", new { statusCode = 500 });
+            }
         }
     }
 }

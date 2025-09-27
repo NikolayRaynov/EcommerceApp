@@ -1,0 +1,48 @@
+﻿.carousel-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.carousel-inner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-item {
+    transition: transform 0.5s ease;
+}
+
+.carousel-caption {
+    background: none !important;
+    border-radius: 5px;
+}
+
+.delete-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.comments-section {
+    margin-top: 20px;
+}
+
+.comment {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.col-md-6 {
+    flex: 1 1 48%;
+}

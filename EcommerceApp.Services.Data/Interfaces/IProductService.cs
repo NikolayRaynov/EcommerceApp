@@ -6,18 +6,18 @@ namespace EcommerceApp.Services.Data.Interfaces
 {
     public interface IProductService
     {
-        Task<ProductPageViewModel> GetAllProductsAsync(int pageNumber = DefaultPageNumber, 
+        Task<ProductPageViewModel> GetAllProductsAsync(int pageNumber = DefaultPageNumber,
             int pageSize = DefaultPageSize, int? categoryId = null);
-        Task<int> AddProductAsync(AddProductViewModel model, List<IFormFile> images);
+        Task AddProductAsync(AddProductViewModel model, List<IFormFile> images);
         Task<EditProductViewModel?> GetProductForEditAsync(int productId);
         Task<bool> UpdateProductAsync(EditProductViewModel model, List<IFormFile> newImages);
         Task<DeleteProductViewModel?> GetProductForDeleteAsync(int productId);
-        Task<bool> DeleteProductAsync(int productId);
+        Task DeleteProductAsync(int productId);
         Task<ProductIndexViewModel?> GetProductByIdAsync(int productId);
         Task<ProductPageViewModel> GetPopularProductsAsync(int pageNumber = DefaultPageNumber,
-            int pageSize = DefaultPageSize);
+            int pageSize = DefaultPageSize, int? categoryId = null);
         Task<ProductPageViewModel> GetNewArrivalsAsync(int pageNumber = DefaultPageNumber,
-            int pageSize = DefaultPageSize);    
+            int pageSize = DefaultPageSize, int? categoryId = null);    
         Task DeleteImageAsync(int productId, string imageUrl);
     }
 }

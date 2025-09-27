@@ -1,4 +1,6 @@
-﻿namespace EcommerceApp.Web.ViewModels.Product
+﻿using EcommerceApp.Web.ViewModels.Review;
+
+namespace EcommerceApp.Web.ViewModels.Product
 {
     public class ProductIndexViewModel
     {
@@ -9,5 +11,6 @@
         public List<string> ImageUrls { get; set; } = new List<string>();
         public DateTime CreatedOn { get; set; }
         public string UserId { get; set; } = string.Empty;
+        public List<ReviewViewModel> Reviews { get; set; } = new List<ReviewViewModel>();
     }
 }

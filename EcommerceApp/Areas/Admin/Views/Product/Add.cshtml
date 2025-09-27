@@ -31,10 +31,19 @@
                             <span asp-validation-for="Price" class="text-danger mt-1"></span>
                         </div>
 
+                        <div class="form-floating mb-4">
+                            <select asp-for="CategoryId" class="form-select"
+                                    asp-items="@(new SelectList(Model.Categories, "Id", "Name"))"
+                                    id="categorySelect">
+                                <option value="">-- Select --</option>
+                            </select>
+                            <label for="categorySelect">Category</label>
+                            <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                        </div>
+
                         <div class="mb-4">
-                            <label asp-for="ImageFile" class="form-label">Product Image</label>
-                            <input asp-for="ImageFile" class="form-control" />
-                            <span asp-validation-for="ImageFile" class="text-danger mt-1"></span>
+                            <label class="form-label">Images</label>
+                            <input asp-for="Images" type="file" multiple class="form-control" />
                         </div>
 
                         <div class="d-grid gap-2">

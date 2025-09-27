@@ -1,55 +1,109 @@
 ﻿@model ProductPageViewModel
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Home";
     var actionName = (string?)ViewBag.ActionName ?? "Index";
+    var currentCategoryId = ViewBag.SelectedCategoryId as int?;
+    var queryParams = new Dictionary<string, string>();
+    if (currentCategoryId.HasValue && currentCategoryId.Value > 0)
+    {
+        queryParams["categoryId"] = currentCategoryId.Value.ToString();
+    }
 }
+@if (Model.Products.Any())
+{
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-6 col-md-8 pt-5">
+            <form asp-action="Index" method="get">
+                <div class="d-flex align-items-center justify-content-center gap-2">
+                    <label for="categoryId" class="form-label mb-0">Category:</label>
+                    <div class="input-group" style="max-width: 400px;">
+                        <select name="categoryId" id="categoryId" asp-items="ViewBag.Categories" class="form-select">
+                            <option value="">All</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-<section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            @foreach (var product in Model.Products)
-            {
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <img class="card-img-top" src="@product.Image" alt="..." />
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <h5 class="fw-bolder">@product.Name</h5>
-                                @product.Price
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <div id="carouselExampleIndicators_@product.Id" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    @if (product.ImageUrls != null && product.ImageUrls.Any())
+                                    {
+                                        for (int i = 0; i < product.ImageUrls.Count; i++)
+                                        {
+                                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                                <img src="@product.ImageUrls[i]" class="card-img-top" style="max-height: 200px; width: 100%; object-fit: fill;" alt="Destination Image">
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="carousel-item active">
+                                            <img src="~/images/NoPhoto.jpg" class="d-block w-100" style="height: 200px; object-fit: cover;" alt="Placeholder Image">
+                                        </div>
+                                    }
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators_@product.Id" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators_@product.Id" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
-                        </div>
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center">
-                                <form method="post" asp-area="" asp-action="AddToCart" asp-controller="Cart">
-                                    <input type="hidden" name="productId" value="@product.Id" />
-                                    <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
-                                </form>
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <h5 class="fw-bolder">@product.Name</h5>
+                                    @product.Price
+                                </div>
+                            </div>
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center d-flex justify-content-center gap-2">
+                                    <a asp-area="Admin" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-outline-info flex-fill">Details</a>
+                                    <form method="post" asp-area="" asp-action="AddToCart" asp-controller="Cart" class="flex-fill">
+                                        <input type="hidden" name="productId" value="@product.Id" />
+                                        <button type="submit" class="btn btn-outline-dark w-100">Add to cart</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
-    </div>
-</section>
-
-@if (Model.TotalPages > 1)
-{
-    <nav aria-label="Page navigation" class="mt-4">
-        <ul class="pagination justify-content-center">
-            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-                <a class="page-link" asp-action="@actionName" asp-route-page="@(Model.PageNumber - 1)">Previous</a>
-            </li>
-            @for (int i = 1; i <= Model.TotalPages; i++)
-            {
-                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                    <a class="page-link" asp-action="@actionName" asp-route-page="@i">@i</a>
+    </section>
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)" asp-route-searchTerm="@ViewBag.SearchTerm">Previous</a>
                 </li>
-            }
-            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-                <a class="page-link" asp-action="@actionName" asp-route-page="@(Model.PageNumber + 1)">Next</a>
-            </li>
-        </ul>
-    </nav>
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-searchTerm="@ViewBag.SearchTerm">@i</a>
+                    </li>
+                }
+                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-searchTerm="@ViewBag.SearchTerm">Next</a>
+                </li>
+            </ul>
+        </nav>
+    }
+}
+else
+{
+    <h2 class="text-center pt-5">Unfortunately, we do not have any products to display at this time.</h2>
 }
