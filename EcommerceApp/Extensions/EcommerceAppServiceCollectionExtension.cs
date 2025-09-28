@@ -20,6 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IHtmlSanitizer, HtmlSanitizer>();
+            services.AddScoped<IReviewService, ReviewService>();
 
             return services;
         }
