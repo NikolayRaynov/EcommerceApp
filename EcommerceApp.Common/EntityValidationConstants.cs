@@ -11,6 +11,8 @@
             public const int ImageMaxLength = 2083;
             public const int MinQuantity = 1;
             public const int MaxQuantity = 20;
+            public const decimal ProductPriceMinValue = 5.00m;
+            public const decimal ProductPriceMaxValue = 9999.99m;
         }
 
         public static class Order
