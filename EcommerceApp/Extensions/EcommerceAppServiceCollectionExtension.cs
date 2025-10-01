@@ -21,6 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IHtmlSanitizer, HtmlSanitizer>();
             services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IFavoriteProductService, FavoriteProductService>();
 
             return services;
         }
