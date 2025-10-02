@@ -14,8 +14,8 @@ namespace EcommerceApp.Web.ViewModels.FavoritePlace
         public string ProductName { get; set; } = null!;
 
         [Required]
-        [Range(typeof(int), ProductPriceMinValue, ProductPriceMaxValue)]
-        public int ProductPrice { get; set; }
+        [Range(typeof(decimal), ProductPriceMinValue, ProductPriceMaxValue)]
+        public decimal ProductPrice { get; set; }
 
         [Required]
         [MinLength(ProductDescriptionMinLength)]
