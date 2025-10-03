@@ -5,7 +5,7 @@
     using static EcommerceApp.Common.EntityValidationConstants.Image;
     public class DeleteFavoriteViewModel
     {
-        public int DestinationId { get; set; }
+        public int ProductId { get; set; }
 
         [Required]
         [MinLength(ProductNameMinLength)]
