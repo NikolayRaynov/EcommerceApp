@@ -1,4 +1,4 @@
-﻿namespace EcommerceApp.Web.ViewModels.FavoritePlace
+﻿namespace EcommerceApp.Web.ViewModels.FavoriteProduct
 {
     using System.ComponentModel.DataAnnotations;
     using static EcommerceApp.Common.EntityValidationConstants.Product;

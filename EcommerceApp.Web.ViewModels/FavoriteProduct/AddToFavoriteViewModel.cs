@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EcommerceApp.Web.ViewModels.FavoritePlace
+namespace EcommerceApp.Web.ViewModels.FavoriteProduct
 {
     using static EcommerceApp.Common.EntityValidationConstants.Product;
     using static EcommerceApp.Common.EntityValidationConstants.Image;
