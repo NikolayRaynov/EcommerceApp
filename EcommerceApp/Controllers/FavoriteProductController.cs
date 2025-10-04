@@ -1,5 +1,5 @@
 ﻿using EcommerceApp.Services.Data.Interfaces;
-using EcommerceApp.Web.ViewModels.FavoritePlace;
+using EcommerceApp.Web.ViewModels.FavoriteProduct;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -111,6 +111,7 @@ namespace EcommerceApp.Controllers
                     ProductId = product.Id,
                     ProductName = product.Name,
                     ProductDescription = product.Description,
+                    ProductPrice = product.Price,
                     ProductImageUrls = product.ImageUrls
                 };
 
