@@ -1,0 +1,56 @@
+﻿@model DeleteFavoriteViewModel
+
+@{
+    ViewBag.Title = "Remove Favorite Product";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger text-center">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="text-center">
+    <h4>Are you sure you want to remove the following product from your favorites?</h4>
+    <div class="card" style="width: 20rem; margin: auto;">
+        @if (Model.ProductImageUrls != null && Model.ProductImageUrls.Any())
+        {
+            for (int i = 0; i < Model.ProductImageUrls.Count; i++)
+            {
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <img src="@Model.ProductImageUrls[i]" class="d-block w-100" style="height: 200px; object-fit: cover;" alt="@Model.ProductName">
+                </div>
+            }
+        }
+        else
+        {
+            <img src="~/images/NoPhoto.jpg" class="card-img-top" alt="@Model.ProductName" style="height: 200px; object-fit: cover;">
+        }
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators_@Model.ProductId" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators_@Model.ProductId" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+        <div class="card-body">
+            <h5 class="card-title">@Model.ProductName</h5>
+            <p class="card-text">@Model.ProductPrice.ToString("F2")€</p>
+            <p class="card-text">@Model.ProductDescription</p>
+            <form asp-action="Delete" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                <button type="submit" class="btn btn-danger">Remove from Favorites</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
