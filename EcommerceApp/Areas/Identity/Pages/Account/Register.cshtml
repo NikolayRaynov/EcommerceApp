@@ -42,10 +42,11 @@
                         </div>
 
                         <div class="text-center mt-3">
-                            <p class="mb-0">
+                            <h6 class="mb-0">
                                 Already have an
                                 account? <a asp-page="./Login" class="text-decoration-none">Log in</a>
-                            </p>
+                            </h6>
+                            <h6 class="pt-4">Or register with:</h6>
                         </div>
                     </form>
 
@@ -76,13 +77,7 @@
                                                 @if (provider.Name == "Google")
                                                 {
                                                     <button type="submit" class="btn btn-danger" name="provider" value="Google" title="Register using your Google account">
-                                                        <i class="fab fa-google"></i> Register with Google
-                                                    </button>
-                                                }
-                                                else if (provider.Name == "Facebook")
-                                                {
-                                                    <button type="submit" class="btn btn-primary" name="provider" value="Facebook" title="Register using your Facebook account">
-                                                        <i class="fab fa-facebook"></i> Register with Facebook
+                                                        <i class="fab fa-google pe-2"></i>Google
                                                     </button>
                                                 }
                                                 else
