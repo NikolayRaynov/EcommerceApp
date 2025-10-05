@@ -70,10 +70,16 @@
                             </div>
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center d-flex justify-content-center gap-2">
-                                    <a asp-area="Admin" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-outline-info flex-fill">Details</a>
+                                    <a asp-area="Admin" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-success">Details</a>
                                     <form method="post" asp-area="" asp-action="AddToCart" asp-controller="Cart" class="flex-fill">
                                         <input type="hidden" name="productId" value="@product.Id" />
-                                        <button type="submit" class="btn btn-outline-dark w-100">Add to cart</button>
+                                        <button type="submit" class="btn btn-primary w-100">Add to cart</button>
+                                    </form>
+                                </div>
+                                <div class="text-center d-flex justify-content-center gap-2 pt-2">
+                                    <form method="post" asp-area="" asp-action="Add" asp-controller="FavoriteProduct" class="flex-fill">
+                                        <input type="hidden" name="productId" value="@product.Id" />
+                                        <button type="submit" class="btn btn-info w-100">Add to favorite</button>
                                     </form>
                                 </div>
                             </div>
