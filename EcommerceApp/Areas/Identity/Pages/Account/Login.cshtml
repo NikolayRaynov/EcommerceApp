@@ -44,9 +44,10 @@
                         </div>
 
                         <div class="text-center mt-3">
-                            <p class="mb-1">
-                                Don't have an account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none">Register as a new user</a>
-                            </p>
+                            <h6 class="mb-1">
+                                Don't have an account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none">Register</a>
+                            </h6>
+                            <h6 class="pt-4">Or log in with:</h6>
                         </div>
                     </form>
 
@@ -75,13 +76,7 @@
                                                 @if (provider.Name == "Google")
                                                 {
                                                     <button type="submit" class="btn btn-danger" name="provider" value="Google" title="Log in using your Google account">
-                                                        <i class="fab fa-google"></i> Login with Google
-                                                    </button>
-                                                }
-                                                else if (provider.Name == "Facebook")
-                                                {
-                                                    <button type="submit" class="btn btn-primary" name="provider" value="Facebook" title="Log in using your Facebook account">
-                                                        <i class="fab fa-facebook"></i> Login with Facebook
+                                                        <i class="fab fa-google"></i> Google
                                                     </button>
                                                 }
                                                 else
