@@ -1,4 +1,5 @@
 ﻿using EcommerceApp.Web.ViewModels.Order;
+using EcommerceApp.Web.ViewModels.Product;
 
 namespace EcommerceApp.Web.ViewModels.Admin
 {
@@ -6,9 +7,10 @@ namespace EcommerceApp.Web.ViewModels.Admin
     {
         public int TotalOrders { get; set; }
         public int TotalUsers { get; set; }
-        public int TotalProducts { get; set; }
         public decimal TotalRevenue { get; set; }
-        public ICollection<OrderHistoryViewModel> RecentOrders { get; set; } = 
-            new List<OrderHistoryViewModel>();
+        public IEnumerable<ProductsByCategoryViewModel> ProductsByCategory { get; set; } 
+            = new List<ProductsByCategoryViewModel>();
+        public ICollection<OrderHistoryViewModel> RecentOrders { get; set; } 
+            = new List<OrderHistoryViewModel>();
     }
 }
