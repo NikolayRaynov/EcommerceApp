@@ -354,6 +354,23 @@ namespace EcommerceApp.Services.Data
             }
         }
 
+        public async Task<IEnumerable<ProductsByCategoryViewModel>> GetProductCountByCategoryAsync()
+        {
+            var productsByCategory = await this.repository
+                .AllReadonly<Product>()
+                .Include(p => p.Category)
+                .GroupBy(p => p.Category.Name)
+                .Select(pbc => new ProductsByCategoryViewModel
+                {
+                    CategoryName = pbc.Key,
+                    ProductCount = pbc.Count()
+                })
+                .OrderByDescending(pbc => pbc.ProductCount)
+                .ToListAsync();
+
+            return productsByCategory;
+        }
+
         private async Task<List<string>> SaveImages(List<IFormFile> images, int categoryId)
         {
             var category = await categoryService.GetByIdAsync(categoryId);
