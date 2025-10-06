@@ -19,5 +19,6 @@ namespace EcommerceApp.Services.Data.Interfaces
         Task<ProductPageViewModel> GetNewArrivalsAsync(int pageNumber = DefaultPageNumber,
             int pageSize = DefaultPageSize, int? categoryId = null);    
         Task DeleteImageAsync(int productId, string imageUrl);
+        Task<IEnumerable<ProductsByCategoryViewModel>> GetProductCountByCategoryAsync();
     }
 }
