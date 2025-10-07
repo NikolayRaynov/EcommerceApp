@@ -30,7 +30,7 @@ namespace EcommerceApp.Areas.Admin.Controllers
             var totalOrders = await this.orderService.GetTotalOrdersCountAsync();
             var totalUsers = await this.userService.GetTotalUsersCountAsync();
             var productsByCategory = await this.productService.GetProductCountByCategoryAsync();
-            var totalRevenue = await this.orderService.GetTotalRevenueAsync();
+            var lowStockQuantity = await this.productService.GetLowStockProducts();
 
             var recentOrders = await this.orderService.GetRecentOrdersAsync(10);
 
@@ -39,7 +39,7 @@ namespace EcommerceApp.Areas.Admin.Controllers
                 TotalOrders = totalOrders,
                 TotalUsers = totalUsers,
                 ProductsByCategory = productsByCategory,
-                TotalRevenue = totalRevenue,
+                LowStockQuantities = lowStockQuantity,
                 RecentOrders = recentOrders
             };
 
