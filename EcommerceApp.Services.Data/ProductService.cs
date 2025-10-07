@@ -370,6 +370,22 @@ namespace EcommerceApp.Services.Data
 
             return productsByCategory;
         }
+        public async Task<IEnumerable<ProductsLowStockQuantity>> GetLowStockProducts()
+        {
+            var lowStockProducts = await this.repository
+                .AllReadonly<Product>()
+                .Where(p => p.StockQuantity < 5)
+                .Include(p => p.Images)
+                .Select(p => new ProductsLowStockQuantity
+                {
+                    ProductName = p.Name,
+                    StockQuantity = p.StockQuantity
+                })
+                .OrderByDescending(p => p.StockQuantity)
+                .ToListAsync();
+
+            return lowStockProducts;
+        }
 
         private async Task<List<string>> SaveImages(List<IFormFile> images, int categoryId)
         {
