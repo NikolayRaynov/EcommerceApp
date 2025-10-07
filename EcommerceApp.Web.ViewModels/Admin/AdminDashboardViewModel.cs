@@ -7,10 +7,11 @@ namespace EcommerceApp.Web.ViewModels.Admin
     {
         public int TotalOrders { get; set; }
         public int TotalUsers { get; set; }
-        public decimal TotalRevenue { get; set; }
-        public IEnumerable<ProductsByCategoryViewModel> ProductsByCategory { get; set; } 
+        public IEnumerable<ProductsLowStockQuantity> LowStockQuantities { get; set; }
+            = new List<ProductsLowStockQuantity>();
+        public IEnumerable<ProductsByCategoryViewModel> ProductsByCategory { get; set; }
             = new List<ProductsByCategoryViewModel>();
-        public ICollection<OrderHistoryViewModel> RecentOrders { get; set; } 
+        public ICollection<OrderHistoryViewModel> RecentOrders { get; set; }
             = new List<OrderHistoryViewModel>();
     }
 }
