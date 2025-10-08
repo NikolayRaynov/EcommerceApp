@@ -98,6 +98,22 @@ namespace EcommerceApp.Services.Data
             return viewModel;
         }
 
+        public async Task<IEnumerable<OrderStatusCountViewModel>> GetOrderStatusDistributionAsync()
+        {
+            var orderStatusDistribution = await this.repository
+                .AllReadonly<Order>()
+                .GroupBy(o => o.Status)
+                .Select(os => new OrderStatusCountViewModel
+                {
+                    StatusName = os.Key.ToString(),
+                    Count = os.Count()
+                })
+                .OrderByDescending(d => d.Count)
+                .ToListAsync();
+
+            return orderStatusDistribution;
+        }
+
         public async Task<ICollection<OrderHistoryViewModel>> GetRecentOrdersAsync(int count)
         {
             var recentOrders = await this.repository
@@ -162,3 +178,4 @@ namespace EcommerceApp.Services.Data
         }
     }
 }
+
