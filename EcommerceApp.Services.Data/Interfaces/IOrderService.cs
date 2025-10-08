@@ -11,5 +11,6 @@ namespace EcommerceApp.Services.Data.Interfaces
         Task<int> GetTotalOrdersCountAsync();
         Task<decimal> GetTotalRevenueAsync();
         Task<ICollection<OrderHistoryViewModel>> GetRecentOrdersAsync(int count);
+        Task<IEnumerable<OrderStatusCountViewModel>> GetOrderStatusDistributionAsync();
     }
 }
