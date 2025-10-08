@@ -28,7 +28,7 @@ namespace EcommerceApp.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var totalOrders = await this.orderService.GetTotalOrdersCountAsync();
-            var totalUsers = await this.userService.GetTotalUsersCountAsync();
+            var orderStatusDistribution = await this.orderService.GetOrderStatusDistributionAsync();
             var productsByCategory = await this.productService.GetProductCountByCategoryAsync();
             var lowStockQuantity = await this.productService.GetLowStockProducts();
 
@@ -37,7 +37,7 @@ namespace EcommerceApp.Areas.Admin.Controllers
             var model = new AdminDashboardViewModel
             {
                 TotalOrders = totalOrders,
-                TotalUsers = totalUsers,
+                OrderStatusDistribution = orderStatusDistribution,
                 ProductsByCategory = productsByCategory,
                 LowStockQuantities = lowStockQuantity,
                 RecentOrders = recentOrders
