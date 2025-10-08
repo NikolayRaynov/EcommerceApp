@@ -68,43 +68,54 @@
         </div>
     </div>
     <div class="row g-4">
-        <div class="col-lg-3 col-md-6">
-            <div class="card bg-primary text-white shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <i class="fas fa-box-open fa-3x"></i>
-                        <div>
-                            <div class="text-white-75 small">Total Orders</div>
-                            <h2 class="mb-0">@Model.TotalOrders</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" asp-area="" asp-controller="Order" asp-action="OrderHistory">View Orders</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card bg-success text-white shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <i class="fas fa-users fa-3x"></i>
-                        <div>
-                            <div class="text-white-75 small">Total Users</div>
-                            <h2 class="mb-0">@Model.TotalUsers</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" asp-area="Admin" asp-controller="UserManagement" asp-action="Index">View Users</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
+        <div class="col-lg-6 col-md-12 mb-4">
+            <h3>Order Status Distribution</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Status</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderStatusDistribution)
+                        {
+                            <tr class="@(item.StatusName == "Delivered" ? "table-success" :
+                                 item.StatusName == "Cancelled" ? "table-danger" :
+                                 item.StatusName == "Pending" ? "table-warning" : "")">
+                            <td>@item.StatusName</td>
+                            <td>@item.Count</td>
+                        </tr>
+                                                }
+                        @if (!Model.OrderStatusDistribution.Any())
+                        {
+                            <tr>
+                                <td colspan="2" class="text-center">No orders found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-
+    <div class="col-lg-3 col-md-6">
+        <div class="card bg-primary text-white shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <i class="fas fa-box-open fa-3x"></i>
+                    <div>
+                        <div class="text-white-75 small">Total Orders</div>
+                        <h2 class="mb-0">@Model.TotalOrders</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" asp-area="" asp-controller="Order" asp-action="OrderHistory">View Orders</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
     <div class="row my-5">
         <div class="col-12">
             <h3>Recent Orders</h3>
