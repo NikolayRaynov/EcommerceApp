@@ -1,4 +1,5 @@
 ﻿using EcommerceApp.Web.ViewModels.Order;
+using EcommerceApp.Web.ViewModels.Product;
 
 namespace EcommerceApp.Services.Data.Interfaces
 {
@@ -12,5 +13,6 @@ namespace EcommerceApp.Services.Data.Interfaces
         Task<decimal> GetTotalRevenueAsync();
         Task<ICollection<OrderHistoryViewModel>> GetRecentOrdersAsync(int count);
         Task<IEnumerable<OrderStatusCountViewModel>> GetOrderStatusDistributionAsync();
+        Task<IEnumerable<TopSellingProductsViewModel>> GetTopSellingProductsAsync(int topSellingCount);
     }
 }
