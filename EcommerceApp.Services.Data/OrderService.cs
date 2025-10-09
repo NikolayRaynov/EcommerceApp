@@ -3,6 +3,7 @@ using EcommerceApp.Data.Models;
 using EcommerceApp.Data.Repository.Interfaces;
 using EcommerceApp.Services.Data.Interfaces;
 using EcommerceApp.Web.ViewModels.Order;
+using EcommerceApp.Web.ViewModels.Product;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.Services.Data
@@ -131,6 +132,24 @@ namespace EcommerceApp.Services.Data
                 .ToListAsync();
 
             return recentOrders;
+        }
+
+        public async Task<IEnumerable<TopSellingProductsViewModel>> GetTopSellingProductsAsync(int topSellingCount)
+        {
+            var topSellingProducts = await this.repository
+                .AllReadonly<OrderProduct>()
+                .Include(op => op.Product)
+                .GroupBy(op => op.ProductId)
+                .Select(tp => new TopSellingProductsViewModel
+                {
+                    ProductName = tp.First().Product.Name,
+                    QuantitySold = tp.Sum(op => op.Quantity)
+                })
+                .OrderByDescending(p => p.QuantitySold)
+                .Take(topSellingCount)
+                .ToListAsync();
+
+            return topSellingProducts;
         }
 
         public async Task<decimal> GetTotalAmountAsync(string userId)
