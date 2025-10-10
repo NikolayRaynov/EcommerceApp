@@ -22,6 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IHtmlSanitizer, HtmlSanitizer>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IFavoriteProductService, FavoriteProductService>();
+            services.AddScoped<IStripeService, StripeService>();
 
             return services;
         }
