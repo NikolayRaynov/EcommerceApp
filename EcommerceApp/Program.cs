@@ -1,9 +1,12 @@
 using EcommerceApp.Data;
 using EcommerceApp.Data.Configuration;
+using EcommerceApp.Data.Configuration.Settings;
 using EcommerceApp.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
+
 using static EcommerceApp.Common.ApplicationConstants;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +43,9 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddRazorPages();
 builder.Services.AddApplicationServices();
+
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 var app = builder.Build();
 
