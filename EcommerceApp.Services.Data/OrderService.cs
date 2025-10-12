@@ -69,6 +69,7 @@ namespace EcommerceApp.Services.Data
                 .AllReadonly<Order>()
                 .Include(op => op.OrderProducts)
                 .ThenInclude(p => p.Product)
+                .ThenInclude(i => i.Images)
                 .FirstOrDefaultAsync(o => o.Id == orderId && o.UserId == userId);
 
             if (order == null)
@@ -87,7 +88,7 @@ namespace EcommerceApp.Services.Data
                     .Select(op => new OrderItemViewModel
                     {
                         ProductName = op.Product.Name,
-                        Image = op.Product.Image,
+                        ImageUrls = op.Product.Images.Select(i => i.Url).ToList(),
                         Description = op.Product.Description,
                         Quantity = op.Quantity,
                         Price = op.PriceAtTimeOfPurchase,
