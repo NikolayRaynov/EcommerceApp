@@ -26,11 +26,12 @@ namespace EcommerceApp.Services.Data
                 .All<CartProduct>()
                 .Where(cp => cp.CartId == userCart.Id)
                 .Include(cp => cp.Product)
+                .ThenInclude(cp => cp.Images)
                 .Select(c => new CartItemViewModel
                 {
                     Id = c.ProductId,
                     ProductName = c.Product.Name,
-                    ImageUrl = c.Product.Image,
+                    ImageUrls = c.Product.Images.Select(i => i.Url).ToList(),
                     Quantity = c.Quantity,
                     Price = c.Product.Price
                 })
