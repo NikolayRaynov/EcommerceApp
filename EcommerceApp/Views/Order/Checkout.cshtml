@@ -1,53 +1,130 @@
-﻿@model EcommerceApp.Web.ViewModels.Order.OrderCheckoutViewModel
+﻿@model OrderCheckoutViewModel
 
 @{
     ViewData["Title"] = "Checkout";
 }
 
-<h1 class="text-center mb-4">Checkout</h1>
+<div class="container py-5">
+    <h1 class="text-center mb-5">Finalize Your Order</h1>
 
-<div class="row justify-content-center">
-    <div class="col-md-10">
-        <div class="card shadow p-4">
-            <h4 class="card-title mb-3">Order Summary</h4>
-            <hr />
+    <div class="row justify-content-center">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow p-4 h-100">
+                <h4 class="card-title mb-4">Shipping Information</h4>
+                <hr class="mb-4" />
 
-            <table class="table table-striped align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>Image</th>
-                        <th>Product</th>
-                        <th>Description</th>
-                        <th class="text-center">Quantity</th>
-                        <th class="text-end">Price</th>
-                        <th class="text-end">Total</th>
-                    </tr>
-                </thead>
-            </table>
+                <form asp-action="CreateCheckoutSession" method="post">
+                    <div class="form-group mb-5">
+                        <label asp-for="ShippingAddress" class="form-label fw-bold">Delivery Address</label>
+                        <textarea asp-for="ShippingAddress" class="form-control" rows="3" placeholder="Enter your full delivery address: Street, Number, City, Zip Code."></textarea>
+                        <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+                    </div>
 
-            <hr />
+                    <h4 class="card-title mb-4 mt-5">Payment</h4>
+                    <hr class="mb-4" />
 
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5>Total:</h5>
-                <h4 class="fw-bold text-success">@Model.TotalAmount.ToString("F2") @Model.CurrencySymbol</h4>
+                    <p class="text-muted">Payment will be processed via Stripe. You will be redirected to a secure payment page.</p>
+
+                    <button type="submit" class="btn btn-primary w-100 py-3 mt-4">
+                        <i class="bi bi-lock-fill me-2"></i> Confirm Order & Pay
+                    </button>
+                    <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">
+                        <i class="bi bi-arrow-left"></i> Back to Cart
+                    </a>
+                </form>
             </div>
+        </div>
 
-            <form asp-action="CreateCheckoutSession" method="post">
-                <div class="form-group mb-3">
-                    <label asp-for="ShippingAddress" class="form-label fw-semibold">Shipping Address</label>
-                    <input asp-for="ShippingAddress" class="form-control" placeholder="Enter your delivery address" />
-                    <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+        <div class="col-lg-6">
+            <div class="card shadow p-4">
+                <h4 class="card-title mb-4">Order Summary (@Model.TotalItems items)</h4>
+                <hr />
+
+                <div class="table-responsive mb-4">
+                    <table class="table table-striped align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 15%;">Image</th>
+                                <th style="width: 30%;">Product</th>
+                                <th class="text-center" style="width: 15%;">Qty</th>
+                                <th class="text-end" style="width: 20%;">Price</th>
+                                <th class="text-end" style="width: 20%;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderItems)
+                            {
+                                <tr>
+                                    <td>
+                                        <div id="checkoutCarousel_@item.ProductName.Replace(" ", "-")" class="carousel slide" data-bs-ride="false" style="max-width: 70px; margin: auto;">
+                                            <div class="carousel-inner rounded">
+                                                @{
+                                                    string imgCheckoutStyle = "height: 50px; object-fit: cover;";
+                                                }
+
+                                                @if (item.ImageUrls != null && item.ImageUrls.Any())
+                                                {
+                                                    for (int i = 0; i < item.ImageUrls.Count; i++)
+                                                    {
+                                                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                                                            <img src="@item.ImageUrls[i]" class="d-block w-100" style="@imgCheckoutStyle" alt="@item.ProductName image @(i + 1)">
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="carousel-item active">
+                                                        <img src="~/images/NoPhoto.jpg" class="d-block w-100" style="@imgCheckoutStyle" alt="No image available">
+                                                    </div>
+                                                }
+                                            </div>
+
+                                            @if (item.ImageUrls.Count > 1)
+                                            {
+                                                <button class="carousel-control-prev" type="button" data-bs-target="#checkoutCarousel_@item.ProductName.Replace(" ", "-")" data-bs-slide="prev" style="width: 15%; opacity: 0.8;">
+                                                    <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true" style="width: 12px; height: 12px;"></span>
+                                                    <span class="visually-hidden">Previous</span>
+                                                </button>
+                                                <button class="carousel-control-next" type="button" data-bs-target="#checkoutCarousel_@item.ProductName.Replace(" ", "-")" data-bs-slide="next" style="width: 15%; opacity: 0.8;">
+                                                    <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true" style="width: 12px; height: 12px;"></span>
+                                                    <span class="visually-hidden">Next</span>
+                                                </button>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong class="d-block">@item.ProductName</strong>
+                                        <small class="text-muted">@item.Description</small>
+                                    </td>
+                                    <td class="text-center">@item.Quantity</td>
+                                    <td class="text-end">@item.Price.ToString("F2") @Model.CurrencySymbol</td>
+                                    <td class="text-end fw-bold">@item.LineTotal.ToString("F2") @Model.CurrencySymbol</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 py-2">
-                    <i class="bi bi-credit-card"></i> Pay with Stripe
-                </button>
-            </form>
+                <div class="row mb-2">
+                    <div class="col text-start">Subtotal:</div>
+                    <div class="col text-end">@Model.Subtotal.ToString("F2") @Model.CurrencySymbol</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col text-start">Shipping:</div>
+                    <div class="col text-end">@Model.ShippingCost.ToString("F2") @Model.CurrencySymbol</div>
+                </div>
+
+                <hr class="mt-3 mb-3 border-3" />
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Total:</h5>
+                    <h4 class="fw-bold text-success mb-0">@Model.TotalAmount.ToString("F2") @Model.CurrencySymbol</h4>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <script src="https://js.stripe.com/v3/"></script>
     <partial name="_ValidationScriptsPartial" />
 }
