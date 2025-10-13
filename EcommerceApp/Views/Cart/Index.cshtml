@@ -32,27 +32,64 @@ else
                     @foreach (var item in Model.CartItems)
                     {
                         <div class="row border-top border-bottom" style="margin: 0; border-top: 1px solid rgba(0,0,0,.1) !important; border-bottom: 1px solid rgba(0,0,0,.1) !important;">
-                            <div class="row main align-items-center" style="margin: 0; padding: 2vh 0; width: 100%;">
-                                
-                                <div class="col-2" style="padding: 0 1vh;">
+                            <div class="row main align-items-center" style="margin: 0; padding: 2vh 0; width: 100%; position: relative;">
+
+                                <div class="col-1" style="padding: 0 1vh; display: flex; align-items: center; justify-content: center;">
                                     <form asp-controller="Cart" asp-action="RemoveFromCart" asp-route-id="@item.Id" method="post" style="display: inline;">
-                                        <button type="submit" class="close" style="border:none; background:none; margin-left: auto; font-size: 0.7rem; cursor: pointer;">&#10005;</button>
+                                        <button type="submit" class="close" style="border:none; background:none; font-size: 1.2rem; cursor: pointer; padding: 0;">&#10005;</button>
                                     </form>
-                                    <img class="img-fluid" src="@item.ImageUrl" style="width: 3.5rem;">
                                 </div>
-                                <div class="col" style="padding: 0 1vh;">
+                                <div class="col-2" style="padding: 0 1vh; display: flex; align-items: center; position: relative;">
+                                    <div id="carouselExampleIndicators_@item.Id" class="carousel slide" data-bs-ride="carousel" style="width: 100%; height: 60px;">
+                                        <div class="carousel-inner" style="height: 100%;">
+                                            @{
+                                                string imgCartStyle = "height: 60px; object-fit: cover; border-radius: 5px;";
+                                            }
+
+                                            @if (item.ImageUrls != null && item.ImageUrls.Any())
+                                            {
+                                                for (int i = 0; i < item.ImageUrls.Count; i++)
+                                                {
+                                                    <div class="carousel-item @(i == 0 ? "active" : "")" style="height: 100%;">
+                                                        <img src="@item.ImageUrls[i]" class="d-block w-100" style="@imgCartStyle" alt="Product Image @(i + 1)">
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <div class="carousel-item active" style="height: 100%;">
+                                                    <img src="~/images/NoPhoto.jpg" class="d-block w-100" style="@imgCartStyle" alt="Placeholder Image">
+                                                </div>
+                                            }
+                                        </div>
+
+                                        @if (item.ImageUrls.Count > 1)
+                                        {
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators_@item.Id" data-bs-slide="prev" style="width: 15%; opacity: 0.8;">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true" style="width: 1rem; height: 1rem; background-color: rgba(0,0,0,0.5); border-radius: 50%;"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators_@item.Id" data-bs-slide="next" style="width: 15%; opacity: 0.8;">
+                                                <span class="carousel-control-next-icon" aria-hidden="true" style="width: 1rem; height: 1rem; background-color: rgba(0,0,0,0.5); border-radius: 50%;"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="col-3" style="padding: 0 1vh; display: flex; flex-direction: column; justify-content: center;">
                                     <div class="row" style="margin: 0;">@item.ProductName</div>
                                 </div>
-                                <div class="col" style="padding: 0 1vh;">
+                                <div class="col-3" style="padding: 0 1vh; display: flex; align-items: center; justify-content: start;">
                                     <form asp-controller="Cart" asp-action="DecreaseQuantity" asp-route-id="@item.Id" method="post" style="display: inline;">
-                                        <button type="submit" class="btn btn-primary p-0" style="border: none; background:none; color:black; padding: 0 !important; cursor: pointer;">-</button>
+                                        <button type="submit" class="btn btn-primary p-0" style="border: none; background:none; color:black; padding: 0 !important; cursor: pointer; font-size: 1.2rem;">-</button>
                                     </form>
-                                    <a style="padding: 0 1vh; border: none; background:none; color:black">@item.Quantity</a>
+                                    <a style="padding: 0 1vh; border: none; background:none; color:black; text-decoration: none;">@item.Quantity</a>
                                     <form asp-controller="Cart" asp-action="IncreaseQuantity" asp-route-id="@item.Id" method="post" style="display: inline;">
-                                        <button type="submit" class="btn btn-primary p-0" style="border: none; background:none; color:black; padding: 0 !important; cursor: pointer;">+</button>
+                                        <button type="submit" class="btn btn-primary p-0" style="border: none; background:none; color:black; padding: 0 !important; cursor: pointer; font-size: 1.2rem;">+</button>
                                     </form>
                                 </div>
-                                <div class="col" style="padding: 0 1vh;">
+                                <div class="col-3" style="padding: 0 1vh; display: flex; align-items: center; justify-content: flex-end;">
                                     &euro;
                                     @item.LineTotal.ToString("F2")
                                 </div>
