@@ -1,6 +1,4 @@
 ﻿using EcommerceApp.Services.Data.Interfaces;
-using EcommerceApp.Web.ViewModels.Order;
-using Microsoft.Extensions.Configuration;
 using Stripe;
 using Stripe.Checkout;
 
@@ -8,45 +6,26 @@ namespace EcommerceApp.Services.Data
 {
     public class StripeService : IStripeService
     {
-        private readonly IConfiguration _configuration;
-
-        public StripeService(IConfiguration configuration)
+        public string CreateSessionAsync(
+            List<SessionLineItemOptions> lineItems,
+            string secretKey,
+            string successUrl,
+            string cancelUrl)
         {
-            _configuration = configuration;
-            StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
-        }
-        public async Task<string> CreateCheckoutSessionUrlAsync(OrderCheckoutViewModel checkoutViewModel)
-        {
-            long amountInCents = (long)(checkoutViewModel.TotalAmount * 100);
+            StripeConfiguration.ApiKey = secretKey;
 
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
-                LineItems = new List<SessionLineItemOptions>
-            {
-                new SessionLineItemOptions
-                {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        Currency = checkoutViewModel.CurrencySymbol,
-                        UnitAmount = amountInCents,
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = $"Order {checkoutViewModel.OrderId}",
-                            Description = "Payment for E-commerce order."
-                        },
-                    },
-                    Quantity = 1,
-                },
-            },
+                LineItems = lineItems,
                 Mode = "payment",
-                SuccessUrl = $"{_configuration["Stripe:SuccessUrl"]}?session_id={{CHECKOUT_SESSION_ID}}&orderId={checkoutViewModel.OrderId}",
-                CancelUrl = $"{_configuration["Stripe:CancelUrl"]}?orderId={checkoutViewModel.OrderId}",
-                ClientReferenceId = checkoutViewModel.OrderId
+
+                SuccessUrl = successUrl,
+                CancelUrl = cancelUrl,
             };
 
             var service = new SessionService();
-            Session session = await service.CreateAsync(options);
+            Session session = service.Create(options);
 
             return session.Url;
         }
