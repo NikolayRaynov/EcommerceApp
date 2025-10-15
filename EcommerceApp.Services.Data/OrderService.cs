@@ -11,10 +11,25 @@ namespace EcommerceApp.Services.Data
     public class OrderService : IOrderService
     {
         private readonly IRepository repository;
-
+        private const decimal ShippingFee = 5.00m;
         public OrderService(IRepository repository)
         {
             this.repository = repository;
+        }
+
+        public async Task ClearUserCartAsync(string userId)
+        {
+            var userCart = await this.repository
+                .All<Cart>()
+                .Include(cp => cp.CartProducts)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (userCart != null && userCart.CartProducts.Any())
+            {
+                this.repository.DeleteRange(userCart.CartProducts);
+                await this.repository.SaveChangesAsync();
+            }
+
         }
 
         public async Task CreateOrderAsync(string userId, OrderCheckoutViewModel model)
@@ -30,7 +45,7 @@ namespace EcommerceApp.Services.Data
                 throw new InvalidOperationException("Cannot create an order from an empty cart.");
             }
 
-            decimal totalAmount = userCart.CartProducts.Sum(cp => cp.Product.Price * cp.Quantity);
+            decimal totalAmount = userCart.CartProducts.Sum(cp => (decimal)cp.Product.Price * cp.Quantity);
 
             var order = new Order
             {
@@ -38,7 +53,7 @@ namespace EcommerceApp.Services.Data
                 OrderDate = DateTime.UtcNow,
                 ShippingAddress = model.ShippingAddress,
                 Status = OrderStatus.Pending,
-                TotalAmount = totalAmount
+                TotalAmount = totalAmount + ShippingFee
             };
 
             await this.repository.AddAsync(order);
@@ -55,12 +70,61 @@ namespace EcommerceApp.Services.Data
                 };
 
                 await this.repository.AddAsync(orderProduct);
+
+                if (cartProduct.Product.StockQuantity >= cartProduct.Quantity)
+                {
+                    cartProduct.Product.StockQuantity -= cartProduct.Quantity;
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Insufficient stock for product {cartProduct.Product.Name}");
+                }
             }
 
             await this.repository.SaveChangesAsync();
 
-            this.repository.DeleteRange(userCart.CartProducts);
-            await this.repository.SaveChangesAsync();
+            await this.ClearUserCartAsync(userId);
+        }
+
+        public async Task<OrderCheckoutViewModel> GetCheckoutDetailsAsync(string userId)
+        {
+            var userCart = await this.repository
+                .AllReadonly<Cart>()
+                .Where(uc => uc.UserId == userId)
+                .Include(cp => cp.CartProducts)
+                .ThenInclude(p => p.Product)
+                .ThenInclude(i => i.Images)
+                .FirstOrDefaultAsync();
+
+            if (userCart == null || !userCart.CartProducts.Any())
+            {
+                return new OrderCheckoutViewModel { TotalAmount = ShippingFee, Subtotal = 0, ShippingCost = ShippingFee };
+            }
+
+            decimal subtotal = userCart.CartProducts.Sum(cp => cp.Product.Price * cp.Quantity);
+
+            decimal totalAmount = subtotal + ShippingFee;
+
+            var viewModel = new OrderCheckoutViewModel
+            {
+                Subtotal = subtotal,
+                ShippingCost = ShippingFee,
+                TotalAmount = totalAmount,
+                CurrencySymbol = "€",
+                OrderItems = userCart.CartProducts
+                    .Select(cp => new OrderItemViewModel
+                    {
+                        ProductName = cp.Product.Name,
+                        Description = cp.Product.Description,
+                        Quantity = cp.Quantity,
+                        Price = cp.Product.Price,
+                        LineTotal = cp.Product.Price * cp.Quantity,
+                        ImageUrls = cp.Product.Images.Select(i => i.Url).ToList()
+                    })
+                    .ToList()
+            };
+
+            return viewModel;
         }
 
         public async Task<OrderDetailViewModel> GetOrderDetailAsync(int orderId, string userId)
