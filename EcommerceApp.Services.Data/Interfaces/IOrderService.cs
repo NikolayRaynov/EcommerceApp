@@ -1,4 +1,5 @@
-﻿using EcommerceApp.Web.ViewModels.Order;
+﻿using EcommerceApp.Common.Enums;
+using EcommerceApp.Web.ViewModels.Order;
 using EcommerceApp.Web.ViewModels.Product;
 
 namespace EcommerceApp.Services.Data.Interfaces
@@ -16,5 +17,6 @@ namespace EcommerceApp.Services.Data.Interfaces
         Task<IEnumerable<TopSellingProductsViewModel>> GetTopSellingProductsAsync(int topSellingCount);
         Task<OrderCheckoutViewModel> GetCheckoutDetailsAsync(string userId);
         Task ClearUserCartAsync(string userId);
+        Task UpdateUserOrderStatusAsync(int orderId, OrderStatus status);
     }
 }
