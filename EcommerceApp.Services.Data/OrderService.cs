@@ -260,6 +260,22 @@ namespace EcommerceApp.Services.Data
 
             return orders;
         }
+
+        public async Task UpdateUserOrderStatusAsync(int orderId, OrderStatus status)
+        {
+            var order = await this.repository
+                .All<Order>()
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                throw new InvalidOperationException($"Order with ID {orderId} not found.");
+            }
+
+            order.Status = status;
+
+            await this.repository.SaveChangesAsync();
+        }
     }
 }
 
