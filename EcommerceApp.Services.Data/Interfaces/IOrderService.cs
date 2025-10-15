@@ -14,5 +14,7 @@ namespace EcommerceApp.Services.Data.Interfaces
         Task<ICollection<OrderHistoryViewModel>> GetRecentOrdersAsync(int count);
         Task<IEnumerable<OrderStatusCountViewModel>> GetOrderStatusDistributionAsync();
         Task<IEnumerable<TopSellingProductsViewModel>> GetTopSellingProductsAsync(int topSellingCount);
+        Task<OrderCheckoutViewModel> GetCheckoutDetailsAsync(string userId);
+        Task ClearUserCartAsync(string userId);
     }
 }
