@@ -1,4 +1,5 @@
-﻿using EcommerceApp.Data.Configuration.Settings;
+﻿using EcommerceApp.Common.Enums;
+using EcommerceApp.Data.Configuration.Settings;
 using EcommerceApp.Services.Data.Interfaces;
 using EcommerceApp.Web.ViewModels.Order;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +17,7 @@ namespace EcommerceApp.Controllers
         private readonly ICartService cartService;
         private readonly IStripeService stripeService;
         private readonly StripeSettings stripeSettings;
-        public OrderController(IOrderService orderService, ICartService cartService, 
+        public OrderController(IOrderService orderService, ICartService cartService,
             IStripeService stripeService, IOptions<StripeSettings> stripeSettings)
         {
             this.orderService = orderService;
@@ -31,18 +32,23 @@ namespace EcommerceApp.Controllers
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var cart = await this.cartService.GetUserCartAsync(userId);
 
-            if (cart == null || !cart.CartItems.Any())
+            try
             {
-                TempData["ErrorMessage"] = "Your cart is empty and cannot be checked out.";
+                var model = await this.orderService.GetCheckoutDetailsAsync(userId);
+
+                if (!model.OrderItems.Any())
+                {
+                    TempData["ErrorMessage"] = "Your cart is empty and cannot be checked out.";
+                    return RedirectToAction(nameof(Index), "Cart");
+                }
+
+                return View(model);
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
                 return RedirectToAction(nameof(Index), "Cart");
             }
-
-            var model = new OrderCheckoutViewModel
-            {
-                TotalAmount = await this.orderService.GetTotalAmountAsync(userId)
-            };
-
-            return View(model);
         }
 
         [HttpPost]
@@ -93,7 +99,7 @@ namespace EcommerceApp.Controllers
 
             if (orderDetails == null)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Home", new { statusCode = 404 });
             }
 
             return View(orderDetails);
@@ -111,57 +117,96 @@ namespace EcommerceApp.Controllers
                 return RedirectToAction(nameof(Index), "Cart");
             }
 
-            var lineItems = cart.CartItems.Select(item => new SessionLineItemOptions
+            var checkoutDetails = await this.orderService.GetCheckoutDetailsAsync(userId);
+            TempData["ShippingAddress"] = model.ShippingAddress;
+
+            string successUrl = this.Url.Action(
+                nameof(Success),
+                "Order",
+                null,
+                protocol: Request.Scheme
+            )!;
+
+            string cancelUrl = this.Url.Action(
+                nameof(Cancel),
+                "Order",
+                null,
+                protocol: Request.Scheme
+            )!;
+
+            var lineItems = new List<SessionLineItemOptions>();
+
+            foreach (var item in checkoutDetails.OrderItems)
+            {
+                lineItems.Add(new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmountDecimal = item.Price * 100,
+                        Currency = "eur",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions { Name = item.ProductName }
+                    },
+                    Quantity = item.Quantity
+                });
+            }
+
+            lineItems.Add(new SessionLineItemOptions
             {
                 PriceData = new SessionLineItemPriceDataOptions
                 {
-                    UnitAmountDecimal = (decimal)item.Price * 100,
+                    UnitAmountDecimal = checkoutDetails.ShippingCost * 100,
                     Currency = "eur",
-                    ProductData = new SessionLineItemPriceDataProductDataOptions
-                    {
-                        Name = item.ProductName
-                    }
+                    ProductData = new SessionLineItemPriceDataProductDataOptions { Name = "Shipping Fee" }
                 },
-                Quantity = item.Quantity
-            }).ToList();
+                Quantity = 1
+            });
 
-            var options = new SessionCreateOptions
-            {
-                PaymentMethodTypes = new List<string> { "card" },
-                LineItems = lineItems,
-                Mode = "payment",
-                SuccessUrl = stripeSettings.SuccessUrl,
-                CancelUrl = stripeSettings.CancelUrl
-            };
+            string sessionUrl = this.stripeService.CreateSessionAsync(
+                lineItems,
+                this.stripeSettings.SecretKey,
+                successUrl,                   
+                cancelUrl                     
+            );
 
-            var service = new SessionService();
-            Session session = service.Create(options);
-
-            return Redirect(session.Url);
+            return Redirect(sessionUrl);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Success(string session_id)
+        public async Task<IActionResult> Success()
+        {
+            string? shippingAddress = TempData["ShippingAddress"] as string;
+
+            if (string.IsNullOrEmpty(shippingAddress))
+            {
+                return RedirectToAction(nameof(Checkout));
+            }
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int orderId = 0;
+
+            try
+            {
+                var orderCheckout = new OrderCheckoutViewModel { ShippingAddress = shippingAddress };
+                orderId = await this.orderService.CreateOrderAsync(userId, orderCheckout);
+
+                await this.orderService.UpdateUserOrderStatusAsync(orderId, OrderStatus.Processing);
+
+                return View();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return RedirectToAction("Error", "Home", new { statusCode = 404 });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Cancel(int orderId)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var model = new OrderCheckoutViewModel
-            {
-                TotalAmount = await this.orderService.GetTotalAmountAsync(userId),
-                CurrencySymbol = "€"
-            };
+            await this.orderService.UpdateUserOrderStatusAsync(orderId, OrderStatus.Cancelled);
 
-            await this.orderService.CreateOrderAsync(userId, model);
-            TempData["SuccessMessage"] = "Your payment was successful! Order created.";
-
-            return View(nameof(Success));
-        }
-
-        [HttpGet]
-        public IActionResult Cancel()
-        {
-            TempData["ErrorMessage"] = "Payment was cancelled.";
-            return RedirectToAction(nameof(Checkout));
+            return View();
         }
     }
 }
