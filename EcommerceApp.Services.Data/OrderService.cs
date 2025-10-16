@@ -5,13 +5,13 @@ using EcommerceApp.Services.Data.Interfaces;
 using EcommerceApp.Web.ViewModels.Order;
 using EcommerceApp.Web.ViewModels.Product;
 using Microsoft.EntityFrameworkCore;
+using static EcommerceApp.Common.ApplicationConstants;
 
 namespace EcommerceApp.Services.Data
 {
     public class OrderService : IOrderService
     {
         private readonly IRepository repository;
-        private const decimal ShippingFee = 5.00m;
         public OrderService(IRepository repository)
         {
             this.repository = repository;
@@ -32,7 +32,7 @@ namespace EcommerceApp.Services.Data
 
         }
 
-        public async Task CreateOrderAsync(string userId, OrderCheckoutViewModel model)
+        public async Task<int> CreateOrderAsync(string userId, OrderCheckoutViewModel model)
         {
             var userCart = this.repository
                 .All<Cart>()
@@ -84,6 +84,8 @@ namespace EcommerceApp.Services.Data
             await this.repository.SaveChangesAsync();
 
             await this.ClearUserCartAsync(userId);
+
+            return order.Id;
         }
 
         public async Task<OrderCheckoutViewModel> GetCheckoutDetailsAsync(string userId)
@@ -278,4 +280,3 @@ namespace EcommerceApp.Services.Data
         }
     }
 }
-
