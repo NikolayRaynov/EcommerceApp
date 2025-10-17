@@ -16,7 +16,7 @@
                 <li class="list-group-item"><strong>Order Date:</strong> @Model.OrderDate.ToShortDateString()</li>
                 <li class="list-group-item"><strong>Status:</strong> @Model.Status</li>
                 <li class="list-group-item"><strong>Shipping Address:</strong> @Model.ShippingAddress</li>
-                <li class="list-group-item"><strong>Total Amount:</strong> @Model.TotalAmount.ToString("F2") BGN</li>
+                <li class="list-group-item"><strong>Total Amount:</strong> @Model.TotalAmount.ToString("F2") EUR</li>
             </ul>
         </div>
 
@@ -28,15 +28,51 @@
                 <ul class="list-group list-group-flush">
                     @foreach (var item in Model.OrderItems)
                     {
+                        var carouselId = $"carousel-item-{Model.OrderId}";
+                        var imageUrls = item.ImageUrls.ToList();
+
                         <li class="list-group-item">
                             <div class="d-flex align-items-center">
-                                <img src="@item.Image" alt="@item.ProductName" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+
+                                @if (imageUrls.Any())
+                                {
+                                    <div id="@carouselId" class="carousel slide" data-bs-ride="carousel" style="width: 100px; height: 100px; overflow: hidden;">
+
+                                        <div class="carousel-indicators">
+                                            @for (int i = 0; i < imageUrls.Count; i++)
+                                            {
+                                                <button type="button" data-bs-target="#@carouselId" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")" aria-label="Slide @(i + 1)"></button>
+                                            }
+                                        </div>
+
+                                        <div class="carousel-inner">
+                                            @for (int i = 0; i < imageUrls.Count; i++)
+                                            {
+                                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                                    <img src="@imageUrls[i]" alt="@item.ProductName" class="d-block w-100 h-100 img-thumbnail" style="object-fit: fill;">
+                                                </div>
+                                            }
+                                        </div>
+
+                                        @if (imageUrls.Count > 1)
+                                        {
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#@carouselId" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#@carouselId" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                        }
+                                    </div>
+                                }
+
                                 <div class="ms-3">
                                     <h5>@item.ProductName</h5>
                                     <p>@item.Description</p>
                                     <p class="mb-0">Quantity: @item.Quantity</p>
                                     <p class="mb-0">Price: @item.Price.ToString("F2") BGN</p>
-                                    <p class="mb-0">Line Total: <strong>@item.LineTotal.ToString("F2") BGN</strong></p>
                                 </div>
                             </div>
                         </li>
