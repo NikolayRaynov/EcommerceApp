@@ -1,0 +1,8 @@
+﻿@model ProfilePictureViewModel
+
+<li class="nav-item me-2">
+    <a asp-area="" asp-controller="Manage" asp-action="Profile" title="Manage" class="nav-link">
+        <img src="@Model.ProfilePictureUrl" alt=""
+             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #fff;" />
+    </a>
+</li>
