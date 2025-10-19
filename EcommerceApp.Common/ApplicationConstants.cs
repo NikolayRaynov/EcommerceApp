@@ -13,5 +13,6 @@
         public const string DefaultFolder = "wwwroot";
         public const string UrlPath = "wwwroot/images/";
         public const decimal ShippingFee = 5.00m;
+        public const string DefaultProfilePicturePath = "/images/defaultPP.png";
     }
 }
