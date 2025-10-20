@@ -28,7 +28,8 @@ namespace EcommerceApp.ViewComponents
 
             var model = new ProfilePictureViewModel
             {
-                ProfilePictureUrl = user?.ProfilePictureUrl ?? DefaultProfilePicturePath
+                ProfilePictureUrl = user?.ProfilePictureUrl ?? DefaultProfilePicturePath,
+                ProfilePictureVersion = user?.ProfilePictureVersion ?? 1
             };
 
             return View(model);
