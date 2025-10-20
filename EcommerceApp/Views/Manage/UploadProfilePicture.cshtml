@@ -1,0 +1,26 @@
+﻿@model AddProfilePictureViewModel
+
+@{
+    ViewData["Title"] = "Upload Profile Picture";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data"
+              asp-area="" asp-controller="Manage" asp-action="UploadProfilePicture">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="ProfileImage"></label>
+                <input asp-for="ProfileImage" type="file" class="form-control" />
+                <span asp-validation-for="ProfileImage" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Upload Picture</button>
+        </form>
+    </div>
+</div>
