@@ -1,8 +1,8 @@
-﻿@model AddProfilePictureViewModel
+﻿@model ProfilePictureViewModel
 
 @{
     ViewData["Title"] = "Manage Profile";
-    string currentUrl = ViewData["CurrentProfilePictureUrl"] as string ?? "/images/defaultPP.png";
+    string fullUrl = $"{Model.ProfilePictureUrl}?v={Model.ProfilePictureVersion}";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -13,7 +13,7 @@
 
         <div class="mb-3">
             <h3>Current Picture</h3>
-            <img src="@currentUrl" alt="Current Profile"
+            <img src="@fullUrl" alt="Current Profile"
                  style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #ccc;" />
         </div>
 
