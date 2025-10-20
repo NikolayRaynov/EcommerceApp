@@ -30,9 +30,11 @@ namespace EcommerceApp.Controllers
                 return RedirectToAction("Error", "Home", new { area = "", statusCode = 404 });
             }
 
-            var model = new AddProfilePictureViewModel();
-
-            ViewData["CurrentProfilePictureUrl"] = user.ProfilePictureUrl ?? DefaultProfilePicturePath;
+            var model = new ProfilePictureViewModel
+            {
+                ProfilePictureUrl = user.ProfilePictureUrl ?? DefaultProfilePicturePath,
+                ProfilePictureVersion = user.ProfilePictureVersion
+            };
 
             return View(model);
         }
@@ -46,13 +48,19 @@ namespace EcommerceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadProfilePicture(AddProfilePictureViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await this.userManager.FindByIdAsync(userId);
+
+            if (!ModelState.IsValid)
+            {
+                var errorModel = new ProfilePictureViewModel
+                {
+                    ProfilePictureUrl = user?.ProfilePictureUrl ?? DefaultProfilePicturePath,
+                    ProfilePictureVersion = user?.ProfilePictureVersion ?? 1,
+                };
+
+                return View(nameof(Profile), errorModel);
+            }
 
             if (user == null)
             {
@@ -64,6 +72,7 @@ namespace EcommerceApp.Controllers
                 string imageUrl = await this.fileService.SaveProfilePictureAsync(model.ProfileImage, userId);
 
                 user.ProfilePictureUrl = imageUrl;
+                user.ProfilePictureVersion++;
                 await this.userManager.UpdateAsync(user);
 
                 return RedirectToAction(nameof(Index), "Home");
