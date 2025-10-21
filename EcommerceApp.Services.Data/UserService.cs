@@ -37,6 +37,7 @@ namespace EcommerceApp.Services.Data
                 allUsersViewModel.Add(new AllUsersViewModel()
                 {
                     Id = user.Id.ToString(),
+                    Username = user.UserName,
                     Email = user.Email,
                     Roles = roles
                 });
@@ -125,7 +126,6 @@ namespace EcommerceApp.Services.Data
 
             try
             {
-                // Step 1: Delete related CartProducts and the Cart itself
                 var userCart = await this.repository.All<Cart>()
                     .Include(c => c.CartProducts)
                     .FirstOrDefaultAsync(c => c.UserId == userId);
@@ -136,7 +136,6 @@ namespace EcommerceApp.Services.Data
                     this.repository.Delete(userCart);
                 }
 
-                // Step 2: Delete related Orders and their OrderProducts
                 var userOrders = await this.repository.All<Order>()
                     .Include(o => o.OrderProducts)
                     .Where(o => o.UserId == userId)
@@ -155,7 +154,6 @@ namespace EcommerceApp.Services.Data
                 throw new DbUpdateException($"Database error during user cleanup: {dbEx.Message}", dbEx);
             }
 
-            // Step 3: Delete the user identity
             var result = await this.userManager.DeleteAsync(user);
             if (!result.Succeeded)
             {
