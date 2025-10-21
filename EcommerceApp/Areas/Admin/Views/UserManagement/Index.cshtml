@@ -18,6 +18,7 @@
     <table class="table table-bordered table-hover">
         <thead class="thead-light">
             <tr>
+                <th>Username</th>
                 <th>Email</th>
                 <th>Roles</th>
                 <th>Actions</th>
@@ -27,6 +28,7 @@
             @foreach (var user in Model)
             {
                 <tr>
+                    <td>@user.Username</td>
                     <td>@user.Email</td>
                     <td>
                         @foreach (var role in user.Roles)
