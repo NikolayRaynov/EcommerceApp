@@ -12,7 +12,8 @@
     <table class="table table-hover table-striped">
         <thead>
             <tr>
-                <th>Order ID</th>
+                <th>User Id</th>
+                <th>Order Id</th>
                 <th>Order Date</th>
                 <th>Status</th>
                 <th>Total Amount</th>
@@ -23,6 +24,7 @@
             @foreach (var order in Model)
             {
                 <tr>
+                    <td>@order.UserId</td>
                     <td>@order.OrderId</td>
                     <td>@order.OrderDate.ToShortDateString()</td>
                     <td>@order.Status</td>
