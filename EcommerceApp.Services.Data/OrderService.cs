@@ -4,6 +4,7 @@ using EcommerceApp.Data.Repository.Interfaces;
 using EcommerceApp.Services.Data.Interfaces;
 using EcommerceApp.Web.ViewModels.Order;
 using EcommerceApp.Web.ViewModels.Product;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static EcommerceApp.Common.ApplicationConstants;
 
@@ -12,9 +13,12 @@ namespace EcommerceApp.Services.Data
     public class OrderService : IOrderService
     {
         private readonly IRepository repository;
-        public OrderService(IRepository repository)
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public OrderService(IRepository repository, UserManager<ApplicationUser> userManager)
         {
             this.repository = repository;
+            this.userManager = userManager;
         }
 
         public async Task ClearUserCartAsync(string userId)
@@ -247,16 +251,27 @@ namespace EcommerceApp.Services.Data
 
         public async Task<ICollection<OrderHistoryViewModel>> GetUserOrderAsync(string userId)
         {
-            var orders = await this.repository
+            var ordersQuery = this.repository
                 .AllReadonly<Order>()
-                .Where(o => o.UserId == userId)
+                .AsQueryable();
+
+            var user = await userManager.FindByIdAsync(userId);
+            bool isAdmin = await IsUserAdmin(userId);
+
+            if (!isAdmin)
+            {
+                ordersQuery = ordersQuery.Where(o => o.UserId == userId);
+            }
+
+            var orders = await ordersQuery
                 .OrderByDescending(o => o.OrderDate)
                 .Select(o => new OrderHistoryViewModel
                 {
                     OrderId = o.Id,
                     OrderDate = o.OrderDate,
                     TotalAmount = o.TotalAmount,
-                    Status = o.Status
+                    Status = o.Status,
+                    UserId = o.UserId
                 })
                 .ToListAsync();
 
@@ -277,6 +292,17 @@ namespace EcommerceApp.Services.Data
             order.Status = status;
 
             await this.repository.SaveChangesAsync();
+        }
+
+        private async Task<bool> IsUserAdmin(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return false;
+            }
+
+            return await userManager.IsInRoleAsync(user, AdminRoleName);
         }
     }
 }
