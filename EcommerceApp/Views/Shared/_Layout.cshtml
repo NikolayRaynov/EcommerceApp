@@ -12,7 +12,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EcommerceApp</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EcommerceApp.styles.css" asp-append-version="true" />
@@ -58,13 +58,11 @@
             </div>
         </div>
     </header>
-    <div class="d-flex flex-column min-vh-100">
-        <main role="main" class="pb-3 flex-grow-1">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main" class="pb-3 flex-grow-1">
+        @RenderBody()
+    </main>
 
-    <footer class="border-top text-muted bg-secondary py-3">
+    <footer class="border-top text-muted bg-secondary py-3 mt-5">
         <div class="container text-black fw-bold">
             &copy; @footerNote - EcommerceApp
         </div>
