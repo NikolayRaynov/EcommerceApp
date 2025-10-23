@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{34
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceApp.Services.Data", "EcommerceApp.Services.Data\EcommerceApp.Services.Data.csproj", "{12EB3952-BB5D-4091-879F-BA4B8B07EDBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceApp.Services.Tests", "EcommerceApp.Services.Tests\EcommerceApp.Services.Tests.csproj", "{09DB4534-391B-4E82-978D-4F5DADE15A01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{12EB3952-BB5D-4091-879F-BA4B8B07EDBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12EB3952-BB5D-4091-879F-BA4B8B07EDBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12EB3952-BB5D-4091-879F-BA4B8B07EDBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09DB4534-391B-4E82-978D-4F5DADE15A01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09DB4534-391B-4E82-978D-4F5DADE15A01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09DB4534-391B-4E82-978D-4F5DADE15A01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09DB4534-391B-4E82-978D-4F5DADE15A01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{9EA1A522-F5F1-4C99-8E20-C6287D8570A4} = {B06A9B5B-07FD-4C45-A494-E740C4981E7A}
 		{7215A5DE-7041-484C-ABF1-B7370897A7BD} = {B06A9B5B-07FD-4C45-A494-E740C4981E7A}
 		{12EB3952-BB5D-4091-879F-BA4B8B07EDBE} = {345147C5-FC81-4B92-AD23-CCC91A3B56F6}
+		{09DB4534-391B-4E82-978D-4F5DADE15A01} = {345147C5-FC81-4B92-AD23-CCC91A3B56F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {161152E6-7FA4-4AC9-B92E-DB6B5799DE5E}
