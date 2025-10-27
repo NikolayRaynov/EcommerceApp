@@ -5,7 +5,7 @@ using EcommerceApp.Services.Data.Interfaces;
 using MockQueryable;
 using Moq;
 
-namespace EcommerceApp.Tests.Services
+namespace EcommerceApp.Services.Tests
 {
     [TestFixture]
     public class CartServiceTests
