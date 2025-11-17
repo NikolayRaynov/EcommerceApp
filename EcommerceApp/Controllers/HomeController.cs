@@ -1,9 +1,6 @@
-using EcommerceApp.Services.Data;
 using EcommerceApp.Services.Data.Interfaces;
-using EcommerceApp.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Diagnostics;
 using static EcommerceApp.Common.ApplicationConstants;
 
 namespace EcommerceApp.Controllers
@@ -78,6 +75,18 @@ namespace EcommerceApp.Controllers
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+        public IActionResult About()
+        {
+            return View();
+        }
+        public IActionResult License()
+        {
+            return View();
+        }
+        public IActionResult Contact()
         {
             return View();
         }
