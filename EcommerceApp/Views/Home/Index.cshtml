@@ -10,6 +10,7 @@
         queryParams["categoryId"] = currentCategoryId.Value.ToString();
     }
 }
+
 @if (Model.Products.Any())
 {
     <div class="row justify-content-center mb-4">
@@ -65,10 +66,12 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <h5 class="fw-bolder">@product.Name</h5>
-                                    @product.Price
                                 </div>
                             </div>
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center pb-3">
+                                    @product.Price €
+                                </div>
                                 <div class="d-grid gap-2">
 
                                     <div class="d-flex justify-content-center gap-2">
