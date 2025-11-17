@@ -1,0 +1,28 @@
+﻿html {
+    font-family: 'Inter', sans-serif;
+}
+.bg-dark-primary {
+    background-color: #1a1a1a;
+}
+.bg-gray-secondary {
+    background-color: #2c2c2c;
+}
+.text-light {
+    color: #e5e5e5;
+}
+.text-subtle {
+    color: #a3a3a3;
+}
+.rounded-xl {
+    border-radius: 0.75rem;
+}
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+.privacy-list {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+}
+.privacy-list li {
+    margin-bottom: 0.5rem;
+}

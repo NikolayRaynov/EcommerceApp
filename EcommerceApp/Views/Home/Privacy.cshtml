@@ -1,6 +1,87 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
-}
-<h1>@ViewData["Title"]</h1>
+﻿<!DOCTYPE html>
 
-<p>Use this page to detail your site's privacy policy.</p>
+@{
+    Layout = null;
+}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet" href="~/css/privacy.css" />
+
+</head>
+<body class="bg-dark-primary text-light min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-4xl w-full bg-gray-secondary shadow-2xl rounded-xl p-8 sm:p-12 border border-gray-secondary/70">
+        <header class="mb-10 text-center border-b border-gray-secondary/50 pb-4">
+            <h1 class="text-5xl font-extrabold text-light tracking-tight">Privacy Policy</h1>
+        </header>
+        <section class="mb-10">
+            <p class="text-subtle leading-relaxed">
+                Your privacy is of utmost importance to us. This policy outlines how we collect, use, and protect your personal information when you use our online electronics store. By using our service, you agree to the collection and use of information in accordance with this policy.
+            </p>
+        </section>
+        <section class="mb-10">
+            <h2 class="text-3xl font-bold text-light mb-4 border-b border-gray-secondary/50 pb-2">1. Data We Collect</h2>
+            <p class="text-subtle mb-3">
+                We collect several different types of information for various purposes to provide and improve our service to you.
+            </p>
+            <h3 class="text-xl font-semibold text-light mt-4 mb-2">Personal Data</h3>
+            <p class="text-subtle">
+                While using our service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you ("Personal Data"). Personally identifiable information may include, but is not limited to:
+            </p>
+            <ul class="privacy-list text-subtle mt-2">
+                <li>Email address</li>
+                <li>First name and last name</li>
+                <li>Phone number</li>
+                <li>Address, State, Province, ZIP/Postal code, City (for delivery)</li>
+                <li>Payment information (handled by secure third-party processors)</li>
+            </ul>
+            <h3 class="text-xl font-semibold text-light mt-4 mb-2">Usage Data</h3>
+            <p class="text-subtle">
+                We may also collect information on how the service is accessed and used ("Usage Data"). This data may include information such as your computer's Internet Protocol address (e.g., IP address), browser type, browser version, the pages of our service that you visit, the time and date of your visit, the time spent on those pages, unique device identifiers and other diagnostic data.
+            </p>
+        </section>
+        <section class="mb-10">
+            <h2 class="text-3xl font-bold text-light mb-4 border-b border-gray-secondary/50 pb-2">2. Use of Data</h2>
+            <p class="text-subtle mb-3">
+                We use the collected data for various purposes:
+            </p>
+            <ul class="privacy-list text-subtle">
+                <li>To provide and maintain the Service (e.g., processing orders and deliveries).</li>
+                <li>To notify you about changes to our Service.</li>
+                <li>To allow you to participate in interactive features of our Service when you choose to do so.</li>
+                <li>To provide customer care and support.</li>
+                <li>To provide analysis or valuable information so that we can improve the Service.</li>
+                <li>To monitor the usage of the Service.</li>
+                <li>To detect, prevent and address technical issues.</li>
+            </ul>
+        </section>
+        <section class="mb-10">
+            <h2 class="text-3xl font-bold text-light mb-4 border-b border-gray-secondary/50 pb-2">3. Cookies and Tracking</h2>
+            <p class="text-subtle leading-relaxed">
+                We use cookies and similar tracking technologies to track the activity on our Service and hold certain information. Cookies are small files stored on your device. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our Service.
+            </p>
+        </section>
+        <section>
+            <h2 class="text-3xl font-bold text-light mb-4 border-b border-gray-secondary/50 pb-2">4. Security of Data</h2>
+            <p class="text-subtle leading-relaxed">
+                The security of your data is important to us, but remember that no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Data, we cannot guarantee its absolute security. We implement encryption and robust security protocols typical for e-commerce platforms.
+            </p>
+        </section>
+        <footer class="mt-12 pt-6 border-t border-gray-secondary/50 text-center">
+            <p class="text-subtle text-sm">
+                If you have any questions about this Privacy Policy, please contact us.
+            </p>
+            <a asp-controller="Home" asp-action="Contact" class="mt-4 me-4 inline-block px-6 py-2 text-sm font-semibold rounded-lg bg-light text-black border border-light hover:bg-subtle hover:text-dark-primary transition duration-300">
+                Email Our Privacy Team
+            </a>
+            <a asp-controller="Home" asp-action="Index" class="mt-4 inline-block px-6 py-2 text-sm font-semibold rounded-lg bg-light text-black border border-light hover:bg-subtle hover:text-dark-primary transition duration-300">
+                Back to home
+            </a>
+        </footer>
+    </div>
+</body>
+</html>
