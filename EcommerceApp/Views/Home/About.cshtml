@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+
+@{
+	Layout = null;
+}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="~/css/footerViews.css" />
+</head>
+<body class="bg-dark-primary text-light min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-4xl w-full bg-gray-secondary shadow-2xl rounded-xl p-8 sm:p-12 border border-gray-secondary/70">
+        <header class="mb-10 text-center border-b border-gray-secondary/50 pb-4">
+            <h1 class="text-5xl font-extrabold text-light tracking-tight">About Us</h1>
+            <p class="mt-2 text-xl font-medium text-subtle">Our mission, values, and history.</p>
+        </header>
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-light mb-4 flex items-center">
+                <span class="mr-3 text-subtle">★</span> Our Mission
+            </h2>
+            <p class="text-subtle leading-relaxed">
+                We are dedicated to creating a seamless shopping experience for High-Quality Electronics and Gadgets with the goal of offering the latest and most reliable technology at competitive prices. We believe that innovation should be accessible and easy to use, thereby helping our clients enhance their digital lives and productivity. Transparency and community engagement are at the heart of everything we do.
+            </p>
+        </section>
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-light mb-4 flex items-center">
+                <span class="mr-3 text-subtle">⏳</span> History
+            </h2>
+            <div class="space-y-6">
+                <p class="text-subtle leading-relaxed">
+                    Founded in 2018 by a small team of Tech Enthusiasts and E-commerce Specialists, our company started as a small passion project run from a garage, focused on custom gaming PC builds. We quickly expanded due to our commitment to excellent customer service and product authenticity and now serve hundreds of thousands of clients worldwide.
+                </p>
+                <p class="text-subtle leading-relaxed">
+                    Over the years, we have achieved several important milestones, the most significant being the launch of our exclusive "Tech-Certified" refurbished program in 2022. Our history is a testament to perseverance and a passion for solving complex problems.
+                </p>
+            </div>
+        </section>
+        <section>
+            <h2 class="text-3xl font-bold text-light mb-6 flex items-center">
+                <span class="mr-3 text-subtle">✨</span> Core Values
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-4 rounded-lg bg-dark-primary/50 border border-gray-secondary hover:border-light transition duration-300">
+                    <h3 class="text-xl font-semibold text-light mb-2">Innovation</h3>
+                    <p class="text-subtle text-sm">We are always looking for new ways to improve and introduce cutting-edge technologies.</p>
+                </div>
+                <div class="p-4 rounded-lg bg-dark-primary/50 border border-gray-secondary hover:border-light transition duration-300">
+                    <h3 class="text-xl font-semibold text-light mb-2">Quality</h3>
+                    <p class="text-subtle text-sm">We do not compromise on the quality of our products and services.</p>
+                </div>
+                <div class="p-4 rounded-lg bg-dark-primary/50 border border-gray-secondary hover:border-light transition duration-300">
+                    <h3 class="text-xl font-semibold text-light mb-2">Trust</h3>
+                    <p class="text-subtle text-sm">We build long-term relationships through honesty and accountability.</p>
+                </div>
+            </div>
+        </section>
+        <footer class="mt-12 pt-6 border-t border-gray-secondary/50 text-center">
+            <p class="text-subtle text-sm">
+                Want to learn more?
+            </p>
+            <a asp-controller="Home" asp-action="Contact" class="mt-4 inline-block px-6 py-2 text-sm font-semibold rounded-lg bg-light text-black border border-light hover:bg-subtle hover:text-dark-primary transition duration-300">
+                Contact the Team
+            </a>
+            <a asp-controller="Home" asp-action="Index" class="mt-4 inline-block px-6 py-2 text-sm font-semibold rounded-lg bg-light text-black border border-light hover:bg-subtle hover:text-dark-primary transition duration-300">
+                Back to home
+            </a>
+        </footer>
+    </div>
+</body>
+</html>
