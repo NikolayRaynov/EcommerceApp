@@ -82,7 +82,7 @@ namespace EcommerceApp.Controllers
         {
             return View();
         }
-        public IActionResult License()
+        public IActionResult Terms()
         {
             return View();
         }
