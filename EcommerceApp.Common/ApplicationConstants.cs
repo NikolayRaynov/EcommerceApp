@@ -14,5 +14,8 @@
         public const string UrlPath = "wwwroot/images/";
         public const decimal ShippingFee = 5.00m;
         public const string DefaultProfilePicturePath = "/images/defaultPP.png";
+        public const int MaxNameLength = 100;
+        public const int MaxEmailLength = 100;
+        public const int MaxMessageLength = 1000;
     }
 }
