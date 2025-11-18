@@ -26,3 +26,10 @@
 .privacy-list li {
     margin-bottom: 0.5rem;
 }
+.terms-list {
+    list-style-type: decimal;
+    margin-left: 1.5rem;
+}
+.terms-list li {
+    margin-bottom: 0.75rem;
+}

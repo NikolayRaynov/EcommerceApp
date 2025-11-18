@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+
+@{
+	Layout = null;
+}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="~/css/footerViews.css" />
+</head>
+<body class="bg-dark-primary text-light min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-4xl w-full bg-gray-secondary shadow-2xl rounded-xl p-8 sm:p-12 border border-gray-secondary/70">
+        <header class="mb-10 text-center border-b border-gray-secondary/50 pb-4">
+            <h1 class="text-5xl font-extrabold text-light tracking-tight">Terms of Service</h1>
+            <p class="mt-2 text-xl font-medium text-subtle">Agreement for use of the online store.</p>
+        </header>
+        <section class="mb-10">
+            <p class="text-subtle leading-relaxed">
+                Welcome to our online electronics store. These Terms of Service govern your use of our website, services, and purchase of any product. By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service.
+            </p>
+        </section>
+        <div class="space-y-8">
+            <section>
+                <h2 class="text-3xl font-bold text-light mb-4 border-b border-gray-secondary/50 pb-2">1. Account and Membership</h2>
+                <ul class="terms-list text-subtle">
+                    <li>You must be at least 18 years of age to use this Service.</li>
+                    <li>You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password.</li>
+                    <li>We reserve the right to terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</li>
+                </ul>
+            </section>
+            <section>
+                <h2 class="text-3xl font-bold text-light mb-4 border-b border-gray-secondary/50 pb-2">2. Products and Order Acceptance</h2>
+                <ul class="terms-list text-subtle">
+                    <li>All products (e.g., computers, phones, accessories) are subject to availability. We reserve the right to limit the quantities of any products or services that we offer.</li>
+                    <li>Prices for our products are subject to change without notice.</li>
+                    <li>We do not warrant that the quality of any products, services, information, or other material purchased or obtained by you will meet your expectations, or that any errors in the Service will be corrected.</li>
+                    <li>The receipt of an email confirmation does not constitute the acceptance of an order. We reserve the right at any time after receipt of your order to accept or decline your order for any reason.</li>
+                </ul>
+            </section>
+            <section>
+                <h2 class="text-3xl font-bold text-light mb-4 border-b border-gray-secondary/50 pb-2">3. Product Warranties and Limitation of Liability</h2>
+                <ul class="terms-list text-subtle">
+                    <li>All electronics products are sold with the manufacturer's standard warranty. We do not provide any additional, implied warranties beyond those explicitly offered by the manufacturer.</li>
+                    <li>In no event shall our company, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any products purchased.</li>
+                </ul>
+            </section>
+            <section>
+                <h2 class="text-3xl font-bold text-light mb-4 border-b border-gray-secondary/50 pb-2">4. Governing Law</h2>
+                <p class="text-subtle leading-relaxed">
+                    These Terms shall be governed and construed in accordance with the laws of Bulgaria, without regard to its conflict of law provisions. Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights.
+                </p>
+            </section>
+        </div>
+        <footer class="mt-12 pt-6 border-t border-gray-secondary/50 text-center">
+            <a asp-controller="Home" asp-action="Index" class="mt-4 inline-block px-6 py-2 text-sm font-semibold rounded-lg bg-light text-black border border-light hover:bg-subtle hover:text-dark-primary transition duration-300">
+                Back to home
+            </a>
+        </footer>
+    </div>
+</body>
+</html>
