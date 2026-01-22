@@ -1,22 +1,22 @@
 # EcommerceApp
 
-<p>This project was created for educational and demonstration purposes. It represents a fully functional model of a technology online store, developed to showcase modern software architectures and good data management practices. Its main goal is to serve as a practical example of a scalable, secure, and efficient e-commerce platform.</p>
+<p>An electronics store application built with ASP.NET Core that manages the entire shopping process. It provides a tailored experience for different user roles, from guests browsing products to administrators managing the store through a comprehensive data dashboard.</p>
 
 <br>
 
 ## :information_source: How It Works
 
-- Guest visitors: 
+- Guest visitors:
   - browse categories of electronics;
   - view the photos with the carousel and the description of each device;
   - read user reviews.
 - Logged Users:
-  - can add devices to a favorites list; 
-  - can post reviews; 
+  - can add devices to a favorites list;
+  - can post reviews;
   - can rate devices;
   - can buy products.
 - Admin:
-  - can edit/delete users, products, reviews and categories; 
+  - can edit/delete users, products, reviews and categories;
   - can provided/takes away user roles.
 
 <br>
@@ -39,12 +39,15 @@
 <br/><p>This is my home page with implemented pagination logic, a category name search filter, and an image carousel. I used a Bootstrap theme for the layout.\
 I have also implemented logic for adding a product to a favorites list, as well as writing comments under each product (available only for logged-in users).\
 For logged-in users, I implemented functionality for uploading a profile picture and the ability to contact the developer(s) in case of questions or potential issues with the application.
+
 </p><br/>
 
 ### Administration Page:
+
 ![](https://drive.google.com/uc?id=190xXSsKl3XPxfTw_O10hQ4zL1Uw5B9Ho)
 ![](https://drive.google.com/uc?id=1hA1VPUOuCgRkh6gg18Qd1HT1kf9C9a8Y)
 ![](https://drive.google.com/uc?id=1OG2en_VKGUtpMrivSlVSySM3Ky7PIejY)
+
 <p>Additionally, I created an admin dashboard where I display, in a table format, the number of products, the most ordered products, the status of orders, and the number of products in each category, as well as the order history.</p>
 
 <br>
