@@ -36,7 +36,7 @@ public class ProductsApiController : ControllerBase
         var result = await productService.GetAllProductsAsync(page, pageSize, categoryId);
         return Ok(new ProductPageResponse(
             result.PageNumber,
-            result.PageSize,
+            pageSize,
             result.TotalCount,
             result.TotalPages,
             result.Products.Select(product => new ProductResponse(
